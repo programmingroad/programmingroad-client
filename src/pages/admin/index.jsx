@@ -3,21 +3,33 @@ import React, {Component} from "react";
 import {Layout} from 'antd';
 import LeftNav from "../../components/left-nav";
 import Header from "../../components/header";
+import Home from "../home";
+import Edit from "../edit";
+import Tags from "../tags";
+import Articles from "../articles";
+import {Redirect, Route, Switch} from "react-router-dom";
 
-const {Footer, Content, Sider} = Layout;
+const {Content, Sider} = Layout;
 
 export default class Admin extends Component {
 
     render() {
         return (
             <Layout style={{height: '100%'}}>
-                <Sider>
-                    <LeftNav/>
-                </Sider>
+                <Header></Header>
                 <Layout>
-                    {/*<Header></Header>*/}
-                    <Content style={{backgroundColor: '#fff'}}>Content</Content>
-                    <Footer style={{textAlign: 'center', color: '#ccc'}}>推荐使用谷歌浏览器，可以获取的更佳页面操作体验</Footer>
+                    <Sider>
+                        <LeftNav/>
+                    </Sider>
+                    <Content>
+                        <Switch>
+                            <Route path='/admin/home' component={Home}/>
+                            <Route path='/admin/edit' component={Edit}/>
+                            <Route path='/admin/tags' component={Tags}/>
+                            <Route path='/admin/articles' component={Articles}/>
+                            <Redirect to='/admin/home'/>
+                        </Switch>
+                    </Content>
                 </Layout>
             </Layout>
         )

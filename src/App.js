@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 import Login from "./pages/login";
 import Admin from "./pages/admin";
+import Blog from "./pages/blog";
 
 class App extends Component {
 
@@ -9,8 +10,10 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route path='/login' component={Login}/>
-                    <Route path='/' component={Admin}/>
+                    <Route exact path='/login' component={Login}/>
+                    <Route path='/admin' component={Admin}/>
+                    <Route exact path='/' component={Blog}/>
+                    <Redirect to='/'/>
                 </Switch>
             </BrowserRouter>
         );
