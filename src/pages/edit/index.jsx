@@ -18,8 +18,6 @@ const menu = (
     </Menu>
 );
 
-const {TextArea} = Input;
-
 export default class Edit extends Component {
 
     constructor(props) {
@@ -30,17 +28,10 @@ export default class Edit extends Component {
     }
 
     onChange = (e) => {
-        if("0"){
-            console.log(0)
-        }
-
-        if("1"){
-            console.log(1)
-        }
-        // console.log(e)
-        // this.setState({
-        //     value: e.target.value
-        // })
+        console.log(e)
+        this.setState({
+            value: e.target.value
+        })
     }
 
     render() {
@@ -63,7 +54,6 @@ export default class Edit extends Component {
                         className={"edit-content-left"}
                         onChange={this.onChange}
                         value={value}
-                        contentEditable={true}
                     >
                     </textarea>
                     <ReactMarkdown className={"edit-content-right"} source={value}/>
