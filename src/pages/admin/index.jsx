@@ -23,10 +23,10 @@ export default class Admin extends Component {
                     </Sider>
                     <Content>
                         <Switch>
-                            <Route path='/admin/home' component={Home}/>
-                            <Route path='/admin/edit' component={Edit}/>
-                            <Route path='/admin/tags' component={Tags}/>
-                            <Route path='/admin/articles' component={Articles}/>
+                            <Route exact path='/admin/home' component={Home}/>
+                            <Route exact path='/admin/edit' component={Edit}/>
+                            <Route exact path='/admin/tags' component={Tags}/>
+                            <Route exact path='/admin/articles' component={Articles}/>
                             <Redirect to='/admin/home'/>
                         </Switch>
                     </Content>
