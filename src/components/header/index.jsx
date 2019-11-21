@@ -1,10 +1,24 @@
 import React, {Component} from "react";
 import './index.less'
-import {Button} from "antd";
+import {Avatar, Button, Popover} from "antd";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
+import {reqGetUser, reqLogout} from '../../api'
+import cookie from "react-cookies";
 
-export default class Header extends Component {
+class Header extends Component {
+
+    logout = async () => {
+        const token = cookie.load("token");
+
+        if (token) {
+            await reqLogout();
+            this.props.history.replace('/login')
+        }
+    }
 
     render() {
+        const {avatarUrl} = this.props.admin;
         return (
             <div className='header'>
                 <Button
@@ -13,19 +27,30 @@ export default class Header extends Component {
                     icon="mail"
                     style={{
                         backgroundColor: '#785ac3',
-                        marginRight: '10px',
-                        border: "none"
-                    }}/>
-                <Button
-                    type="primary"
-                    shape="circle"
-                    icon="search"
-                    style={{
-                        backgroundColor: '#785ac3',
                         marginRight: '20px',
                         border: "none"
                     }}/>
+                <Popover
+                    placement="bottomRight"
+                    content={<a onClick={this.logout}>退出</a>}
+                    trigger="click"
+                >
+                    <Avatar
+                        src={avatarUrl}
+                        style={{
+                            marginRight: '20px',
+                            cursor: 'pointer'
+                        }}
+                    />
+                </Popover>
+
             </div>
         )
     }
 }
+
+const mapState = (state) => ({
+    admin: state.admin
+})
+
+export default connect(mapState, null)(withRouter(Header))

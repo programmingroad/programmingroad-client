@@ -1,7 +1,17 @@
+import * as constant from './constant'
+
 const defaultState = {
-    admin: ''
+    admin: undefined
 }
 
 export default (state = defaultState, action) => {
-    return state;
+    switch (action.type) {
+        case constant.SET_USER:
+            return {
+                ...state,
+                admin: action.admin
+            }
+        default:
+            return state;
+    }
 }

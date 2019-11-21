@@ -3,6 +3,7 @@ import './index.less'
 import {Avatar, Icon, Menu} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import menuList from "../../config/menuConfig";
+import {connect} from "react-redux";
 
 class LeftNav extends Component {
 
@@ -30,18 +31,21 @@ class LeftNav extends Component {
 
     render() {
         // 获取当前请求的路由路径
-        let path = this.props.location.pathname;
+        const path = this.props.location.pathname;
+
+        const {login,avatarUrl} = this.props.admin;
+
         return (
             <div className="left-nav">
                 <div className="left-nav-header">
                     <Avatar
-                        icon="user"
+                        src={avatarUrl}
                         size={50}
                         style={{
                             marginBottom: '10px',
                         }}
                     />
-                    <h1>programmingroad</h1>
+                    <h1>{login}</h1>
                 </div>
                 <Menu
                     mode="inline"
@@ -57,4 +61,8 @@ class LeftNav extends Component {
     }
 }
 
-export default withRouter(LeftNav)
+const mapState = (state) => ({
+    admin: state.admin
+})
+
+export default connect(mapState, null)(withRouter(LeftNav))
