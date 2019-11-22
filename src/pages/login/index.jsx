@@ -19,7 +19,7 @@ class Login extends Component {
 
             this.props.setAdmin(data.body)
 
-            this.props.history.replace('/admin/home')
+            this.props.history.push('/admin/home')
         }
     }
 

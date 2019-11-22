@@ -13,7 +13,7 @@ class Header extends Component {
 
         if (token) {
             await reqLogout();
-            this.props.history.replace('/login')
+            this.props.history.push('/login')
         }
     }
 
@@ -33,7 +33,6 @@ class Header extends Component {
                 <Popover
                     placement="bottomRight"
                     content={<a onClick={this.logout}>退出</a>}
-                    trigger="click"
                 >
                     <Avatar
                         src={avatarUrl}
