@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Card, Dropdown, Icon, Input, Menu} from "antd";
+import {Button, Card, Dropdown, Icon, Input, Menu, Modal} from "antd";
 import ReactMarkdown from "react-markdown";
 
 import './index.less'
@@ -23,9 +23,22 @@ export default class Edit extends Component {
     constructor(props) {
         super(props)
         this.state = ({
-            value: ""
+            value: "",
+            visible: false
         })
     }
+
+    showModal = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+
+    hideModal = () => {
+        this.setState({
+            visible: false,
+        });
+    };
 
     onChange = (e) => {
         console.log(e)
@@ -46,18 +59,26 @@ export default class Edit extends Component {
                             请选择标签 <Icon type="down"/>
                         </Button>
                     </Dropdown>
-                    <Button type="primary" style={{marginLeft: '30px'}}>发布</Button>
-                    <Button type="primary" style={{marginLeft: '10px'}}>保存</Button>
-                </div>
-                <div className={"edit-content"}>
-                    <textarea
-                        className={"edit-content-left"}
-                        onChange={this.onChange}
-                        value={value}
+                    <Button type="primary" style={{marginLeft: '30px'}} onClick={this.showModal}>预览</Button>
+                    <Modal
+                        title="预览"
+                        visible={this.state.visible}
+                        onOk={this.hideModal}
+                        onCancel={this.hideModal}
+                        footer={null}
+                        wrapClassName={'edit-modal'}
                     >
-                    </textarea>
-                    <ReactMarkdown className={"edit-content-right"} source={value}/>
+                        <ReactMarkdown className={''} source={value}/>
+                    </Modal>
+                    <Button type="primary" style={{marginLeft: '10px'}}>保存</Button>
+                    <Button type="primary" style={{marginLeft: '10px'}}>发布</Button>
                 </div>
+                <textarea
+                    className={"edit-content"}
+                    onChange={this.onChange}
+                    value={value}
+                >
+                </textarea>
             </Card>
         )
     }

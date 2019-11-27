@@ -6,7 +6,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 
     .edit-header {
       display: flex;
@@ -14,30 +13,32 @@
     }
 
     .edit-content {
-      display: flex;
       flex: 1;
       overflow: hidden;
-
-      .edit-content-left {
-        flex: 1;
-        border: none;
-        outline: none;
-        resize: none;
-        background-color: #d9d9d9;
-        padding: 10px;
-        overflow: scroll;
-      }
-
-      .edit-content-right {
-        flex: 1;
-        padding: 10px;
-        overflow: scroll;
-        background-color:  #f2f2f2;
-      }
+      border: none;
+      outline: none;
+      resize: none;
+      background-color: #d9d9d9;
+      padding: 10px;
+      overflow-y: scroll;
     }
   }
 }
 
+.edit-modal {
+  .ant-modal {
+    width: 50% !important;
+    height: 80%;
 
+    .ant-modal-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
 
-
+      .ant-modal-body {
+        flex: 1;
+        overflow-y: scroll;
+      }
+    }
+  }
+}

@@ -43,17 +43,14 @@ export const reqAllTag = () => ajax({
 
 // 删除标签
 export const reqDeleteTag = (id) => ajax({
-    url: BASE + '/tag/delete',
-    method: 'POST',
-    params: {
-        id
-    }
+    url: BASE + '/tag/delete/' + id,
+    method: 'DELETE',
 })
 
 // 添加标签
 export const reqAddTag = (name) => ajax({
     url: BASE + '/tag/add',
-    method: 'POST',
+    method: 'PUT',
     params: {
         name
     }
