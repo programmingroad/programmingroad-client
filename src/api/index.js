@@ -3,13 +3,6 @@ import ajax from './ajax'
 // const BASE = 'http://localhost:80'
 const BASE = ''
 
-/**
- * user
- *
- * @param code
- * @returns {AxiosPromise}
- */
-
 // 登录
 export const reqLogin = (code) => ajax({
     url: BASE + '/user/login',
@@ -28,12 +21,6 @@ export const reqGetUser = () => ajax({
     url: BASE + '/user/user',
     method: 'GET'
 })
-
-/**
- * tag
- *
- * @returns {AxiosPromise}
- */
 
 // 获取所有标签
 export const reqAllTag = () => ajax({
@@ -55,5 +42,21 @@ export const reqAddTag = (name) => ajax({
         name
     }
 })
+
+// 添加文章
+export const reqAddArticle = (article) => ajax({
+    url: BASE + '/article/add',
+    method: 'PUT',
+    data: article
+})
+
+// 删除文章
+export const reqDeleteArticle = () => ajax({})
+
+// 获取文章列表
+export const reqArticleList = () => ajax({})
+
+// 更新文章
+export const reqUpdateArticle = () => ajax({})
 
 
