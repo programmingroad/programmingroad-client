@@ -94,7 +94,7 @@ export default class Tags extends Component {
                         <Input placeholder="标签名称" onChange={this.onChange} value={inputValue}/>
                     </Modal>
                 </div>
-                <Table dataSource={data} pagination={false}>
+                <Table dataSource={data} pagination={false} tableLayout={"fixed"}>
                     <Column title="名称" dataIndex="name" key="name"/>
                     <Column title="创建时间" dataIndex="createTime" key="createTime"/>
                     <Column

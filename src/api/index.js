@@ -51,12 +51,25 @@ export const reqAddArticle = (article) => ajax({
 })
 
 // 删除文章
-export const reqDeleteArticle = () => ajax({})
+export const reqDeleteArticle = (id) => ajax({
+    url: BASE + '/article/delete/' + id,
+    method: 'DELETE'
+})
 
 // 获取文章列表
-export const reqArticleList = () => ajax({})
+export const reqArticleList = (page) => ajax({
+    url: BASE + '/article/listPage',
+    method: 'GET',
+    params: {
+        page
+    }
+})
 
 // 更新文章
-export const reqUpdateArticle = () => ajax({})
+export const reqUpdateArticle = (id, article) => ajax({
+    url: BASE + '/article/update/' + id,
+    method: 'PATCH',
+    data: article
+})
 
 

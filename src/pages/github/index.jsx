@@ -10,17 +10,11 @@ import './index.less'
 class CallBack extends Component {
 
     getUserInfo = async () => {
-
         const path = this.props.location.search;
-
         const param = path.substring(1);
-
         const data = await reqLogin(param);
-
         this.props.setAdmin(data.body)
-
         this.props.history.push('/admin/home')
-
     }
 
     componentWillMount() {
@@ -35,7 +29,6 @@ class CallBack extends Component {
         )
     }
 }
-
 
 const mapDispatch = (dispatch) => ({
     setAdmin(admin) {

@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {Button, Card, Input, Menu, Modal, Select} from "antd";
+import {Button, Card, Input, Modal, Select, message} from "antd";
 import ReactMarkdown from "react-markdown";
 
 import './index.less'
-import {reqAllTag} from "../../api";
+import {reqAddArticle, reqAllTag} from "../../api";
 
 
 const {Option} = Select;
@@ -62,18 +62,31 @@ export default class Edit extends Component {
         })
     }
 
-    save = () => {
-        console.log(this.state)
+    save = async () => {
+        const article = this.getArticle("NOT_RELEASE");
+        await reqAddArticle(article);
+        message.success("保存成功");
     }
 
-    release = () => {
-        console.log(this.state)
+    release = async () => {
+        const article = this.getArticle("RELEASED");
+        await reqAddArticle(article);
+        message.success("发布成功");
+    }
+
+    getArticle = (released) => {
+        const {selectTagId, title, content} = this.state;
+        const article = ({
+            tagId: selectTagId,
+            title,
+            content,
+            released
+        });
+        return article;
     }
 
     render() {
-
         const {content, title, tagList} = this.state;
-
         return (
             <Card title={"写博客"} style={{height: "100%"}}>
                 <div className={"edit-header"}>

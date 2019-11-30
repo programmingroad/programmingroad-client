@@ -11,14 +11,10 @@ import './index.less'
 class Login extends Component {
 
     getUserInfo = async () => {
-
         const token = cookie.load("token");
-
         if (token) {
             const data = await reqGetUser();
-
             this.props.setAdmin(data.body)
-
             this.props.history.push('/admin/home')
         }
     }

@@ -7,7 +7,6 @@ const {TabPane} = Tabs;
 export default class Blog extends Component {
 
     callback(key) {
-        console.log(key);
     }
 
     render() {
