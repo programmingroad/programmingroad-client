@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 import Login from "./pages/login";
 import Admin from "./pages/admin";
-import Blog from "./pages/blog";
+import Blog from "./pages/home/blog";
 import {ConfigProvider} from "antd";
 import zhCN from 'antd/es/locale/zh_CN';
 import CallBack from "./pages/github";

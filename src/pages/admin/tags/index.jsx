@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button, Card, Input, Modal, Table} from "antd";
-import {reqAddTag, reqAllTag, reqDeleteTag} from "../../api";
+import {reqAddTag, reqAllTag, reqDeleteTag} from "../../../api";
 
 import './index.less'
 
@@ -8,7 +8,7 @@ import './index.less'
 const {Column} = Table;
 const {confirm} = Modal;
 
-export default class Tags extends Component {
+export default class AdminTags extends Component {
 
     constructor(props) {
         super(props);
@@ -81,7 +81,7 @@ export default class Tags extends Component {
         const {data, inputValue} = this.state;
         return (
             <Card title={"标签管理"} style={{minHeight: "100%"}}>
-                <div className={'tag-header'}>
+                <div className={'admin-tag-header'}>
                     <Button type="primary" style={{marginLeft: '30px'}} onClick={this.showModal}>添加标签</Button>
                     <Modal
                         title="添加标签"

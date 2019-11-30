@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import './index.less'
 import {Avatar, Icon, Menu} from "antd";
 import {Link, withRouter} from "react-router-dom";
-import menuList from "../../config/menuConfig";
+import menuList from "../../../config/menuConfig";
 import {connect} from "react-redux";
 
-class LeftNav extends Component {
+import './index.less'
+
+class AdminLeftNav extends Component {
 
     /*
     根据menu的数据数组生成对应的标签数组
@@ -33,11 +34,11 @@ class LeftNav extends Component {
         // 获取当前请求的路由路径
         const path = this.props.location.pathname;
 
-        const {login,avatarUrl} = this.props.admin;
+        const {login, avatarUrl} = this.props.admin;
 
         return (
-            <div className="left-nav">
-                <div className="left-nav-header">
+            <div className="admin-left-nav">
+                <div className="admin-left-nav-header">
                     <Avatar
                         src={avatarUrl}
                         size={50}
@@ -65,4 +66,4 @@ const mapState = (state) => ({
     admin: state.admin
 })
 
-export default connect(mapState, null)(withRouter(LeftNav))
+export default connect(mapState, null)(withRouter(AdminLeftNav))

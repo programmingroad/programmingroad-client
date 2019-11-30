@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import {Card, Divider, Modal, Table} from "antd";
-import {reqArticleList, reqDeleteArticle} from "../../api";
+import {reqArticleList, reqDeleteArticle} from "../../../api";
 
 const {Column} = Table;
 const {confirm} = Modal;
 
-export default class Articles extends Component {
+export default class AdminArticles extends Component {
 
     constructor(props) {
         super(props);

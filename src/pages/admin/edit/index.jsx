@@ -3,12 +3,12 @@ import {Button, Card, Input, Modal, Select, message} from "antd";
 import ReactMarkdown from "react-markdown";
 
 import './index.less'
-import {reqAddArticle, reqAllTag} from "../../api";
+import {reqAddArticle, reqAllTag} from "../../../api";
 
 
 const {Option} = Select;
 
-export default class Edit extends Component {
+export default class AdminEdit extends Component {
 
     constructor(props) {
         super(props)
@@ -88,8 +88,8 @@ export default class Edit extends Component {
     render() {
         const {content, title, tagList} = this.state;
         return (
-            <Card title={"写博客"} style={{height: "100%"}}>
-                <div className={"edit-header"}>
+            <Card title={"写博客"} style={{height: "100%"}} className={"admin-edit-ant-card"}>
+                <div className={"admin-edit-header"}>
                     <Input placeholder={"请输入标题"} style={{marginRight: '30px'}} value={title}
                            onChange={this.changeTitle}/>
                     <Select defaultValue="请选择标签" style={{width: 180}} onChange={this.changeSelect}>
@@ -108,7 +108,7 @@ export default class Edit extends Component {
                         onOk={this.cancelPreview}
                         onCancel={this.cancelPreview}
                         footer={null}
-                        wrapClassName={'edit-modal'}
+                        wrapClassName={'admin-edit-modal'}
                     >
                         <ReactMarkdown source={content}/>
                     </Modal>
@@ -116,7 +116,7 @@ export default class Edit extends Component {
                     <Button type="primary" style={{marginLeft: '10px'}} onClick={this.release}>发布</Button>
                 </div>
                 <textarea
-                    className={"edit-content"}
+                    className={"admin-edit-content"}
                     onChange={this.changeContent}
                     value={content}
                 >

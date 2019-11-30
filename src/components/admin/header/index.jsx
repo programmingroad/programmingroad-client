@@ -1,12 +1,13 @@
 import React, {Component} from "react";
-import './index.less'
 import {Avatar, Button, Popover} from "antd";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {reqGetUser, reqLogout} from '../../api'
+import {reqLogout} from '../../../api'
 import cookie from "react-cookies";
 
-class Header extends Component {
+import './index.less'
+
+class AdminHeader extends Component {
 
     logout = async () => {
         const token = cookie.load("token");
@@ -20,7 +21,7 @@ class Header extends Component {
     render() {
         const {avatarUrl} = this.props.admin;
         return (
-            <div className='header'>
+            <div className='admin-header'>
                 <Button
                     type="primary"
                     shape="circle"
@@ -52,4 +53,4 @@ const mapState = (state) => ({
     admin: state.admin
 })
 
-export default connect(mapState, null)(withRouter(Header))
+export default connect(mapState, null)(withRouter(AdminHeader))
