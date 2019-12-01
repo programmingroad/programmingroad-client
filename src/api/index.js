@@ -24,19 +24,19 @@ export const reqGetUser = () => ajax({
 
 // 获取所有标签
 export const reqAllTag = () => ajax({
-    url: BASE + '/tag/all',
+    url: BASE + '/admin/tag/all',
     method: 'GET'
 })
 
 // 删除标签
 export const reqDeleteTag = (id) => ajax({
-    url: BASE + '/tag/delete/' + id,
+    url: BASE + '/admin/tag/delete/' + id,
     method: 'DELETE',
 })
 
 // 添加标签
 export const reqAddTag = (name) => ajax({
-    url: BASE + '/tag/add',
+    url: BASE + '/admin/tag/add',
     method: 'PUT',
     params: {
         name
@@ -45,20 +45,20 @@ export const reqAddTag = (name) => ajax({
 
 // 添加文章
 export const reqAddArticle = (article) => ajax({
-    url: BASE + '/article/add',
+    url: BASE + '/admin/article/add',
     method: 'PUT',
     data: article
 })
 
 // 删除文章
 export const reqDeleteArticle = (id) => ajax({
-    url: BASE + '/article/delete/' + id,
+    url: BASE + '/admin/article/delete/' + id,
     method: 'DELETE'
 })
 
 // 获取文章列表
 export const reqArticleList = (page) => ajax({
-    url: BASE + '/article/listPage',
+    url: BASE + '/admin/article/listPage',
     method: 'GET',
     params: {
         page
@@ -67,7 +67,7 @@ export const reqArticleList = (page) => ajax({
 
 // 更新文章
 export const reqUpdateArticle = (id, article) => ajax({
-    url: BASE + '/article/update/' + id,
+    url: BASE + '/admin/article/update/' + id,
     method: 'PATCH',
     data: article
 })
