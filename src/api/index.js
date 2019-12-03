@@ -85,11 +85,12 @@ export const reqAllTag = () => ajax({
 })
 
 // 获取文章列表
-export const reqArticleList = (page) => ajax({
+export const reqArticleList = (page, tagId) => ajax({
     url: BASE + '/article/listPage',
     method: 'GET',
     params: {
-        page
+        page,
+        tagId
     }
 })
 

@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {Tabs} from "antd";
+import {Button, List, Tabs} from "antd";
 import Header from "../../components/header";
 
 import './index.less'
-import {reqAllTag} from "../../api";
+import {reqAllTag, reqArticleList} from "../../api";
 
 const {TabPane} = Tabs;
 
@@ -12,6 +12,8 @@ export default class Blog extends Component {
     constructor(props) {
         super(props);
         this.state = ({
+            currPage: 1,
+            selectTagId: 0,
             tagList: [],
             articleList: []
         })
@@ -20,35 +22,88 @@ export default class Blog extends Component {
     getTagList = async () => {
         const data = await reqAllTag();
         this.setState({
-            tagList: data.body
+            tagList: data.body,
+            selectTagId: data.body[0].id
+        })
+        return data.body[0].id;
+    }
+
+    getArticleList = async (page, tagId) => {
+        const data = await reqArticleList(page, tagId);
+        this.setState({
+            articleList: [...this.state.articleList, ...data.body],
+            currPage: page
         })
     }
 
-    componentDidMount() {
-        this.getTagList();
+    async componentDidMount() {
+        let tagId = await this.getTagList();
+        this.getArticleList(this.state.currPage, tagId)
+    }
+
+    onLoadMore = () => {
+        this.getArticleList(this.state.currPage + 1, this.state.selectTagId)
+    };
+
+    onChange = (key) => {
+        this.setState({
+            currPage: 1,
+            selectTagId: key,
+            articleList: []
+        }, () => {
+            this.getArticleList(this.state.currPage, this.state.selectTagId)
+        })
+    }
+
+    getLoadMore = () => {
+        const loadMore = (<div
+            style={{
+                textAlign: 'center',
+                marginTop: 20,
+                marginBottom: 50,
+                height: 32,
+                lineHeight: '32px',
+            }}
+        >
+            <Button onClick={this.onLoadMore}>loading more</Button>
+        </div>);
+        return loadMore;
     }
 
     render() {
-        const {tagList} = this.state;
+        const {tagList, articleList} = this.state;
         return (
             <div className={"blog-wrapper"}>
                 <Header title={"Hello World"}></Header>
                 <div className={"blog-content"}>
                     {
                         tagList.length > 0 ?
-                            <Tabs defaultActiveKey={tagList[0].id} style={{width: '50%'}}>
+                            <Tabs style={{width: '50%'}} onChange={this.onChange}>
                                 {
-                                    tagList.map(
-                                        item => {
-                                            return <TabPane tab={item.name} key={item.id}>
-                                                {item.name}
+                                    tagList.map(item => (
+                                            <TabPane tab={item.name} key={item.id}>
+                                                <List
+                                                    loadMore={this.getLoadMore()}
+                                                    dataSource={articleList}
+                                                    itemLayout="vertical"
+                                                    renderItem={item => (
+                                                        <List.Item
+                                                            actions={[<a key="list-loadmore-more">readMore >></a>]}
+                                                        >
+                                                            <List.Item.Meta
+                                                                title={item.title}
+                                                                description={item.content}
+                                                            />
+                                                            <div>Article published in {item.createTime}</div>
+                                                        </List.Item>
+                                                    )}
+                                                />
                                             </TabPane>
-                                        }
+                                        )
                                     )
                                 }
                             </Tabs>
-                            :
-                            undefined
+                            : undefined
                     }
                 </div>
             </div>
