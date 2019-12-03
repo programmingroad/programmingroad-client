@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 import Login from "./pages/login";
 import Admin from "./pages/admin";
 import {ConfigProvider} from "antd";
@@ -7,7 +7,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import CallBack from "./pages/github";
 import {Provider} from "react-redux";
 import store from "./store";
-import Home from "./pages/home";
+import Blog from "./pages/blog";
 
 class App extends Component {
 
@@ -20,7 +20,8 @@ class App extends Component {
                             <Route exact path='/login' component={Login}/>
                             <Route exact path='/callback' component={CallBack}/>
                             <Route path='/admin' component={Admin}/>
-                            <Route path='/' component={Home}/>
+                            <Route exact path='/' component={Blog}/>
+                            <Redirect to={"/"}/>
                         </Switch>
                     </BrowserRouter>
                 </ConfigProvider>

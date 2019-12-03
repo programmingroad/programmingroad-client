@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Card, Divider, Modal, Table} from "antd";
-import {reqArticleList, reqDeleteArticle} from "../../../api";
+import {reqAdminArticleList, reqAdminDeleteArticle} from "../../../api";
 
 const {Column} = Table;
 const {confirm} = Modal;
@@ -19,7 +19,7 @@ export default class AdminArticles extends Component {
 
     // 获取文章
     getArticles = async (currPage) => {
-        const data = await reqArticleList(currPage);
+        const data = await reqAdminArticleList(currPage);
         this.setState({
             data: data.body,
             total: data.page.totalCount
@@ -30,7 +30,7 @@ export default class AdminArticles extends Component {
         confirm({
             title: '删除文章',
             onOk: async () => {
-                await reqDeleteArticle(id);
+                await reqAdminDeleteArticle(id);
                 this.getArticles(this.state.currPage);
             },
             onCancel() {

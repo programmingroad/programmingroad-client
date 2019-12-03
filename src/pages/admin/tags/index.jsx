@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button, Card, Input, Modal, Table} from "antd";
-import {reqAddTag, reqAllTag, reqDeleteTag} from "../../../api";
+import {reqAdminAddTag, reqAdminAllTag, reqAdminDeleteTag} from "../../../api";
 
 import './index.less'
 
@@ -21,7 +21,7 @@ export default class AdminTags extends Component {
 
     // 获取标签
     getTags = async () => {
-        const data = await reqAllTag();
+        const data = await reqAdminAllTag();
         this.setState({
             data: data.body
         })
@@ -32,7 +32,7 @@ export default class AdminTags extends Component {
         confirm({
             title: '删除标签',
             onOk: async () => {
-                await reqDeleteTag(id);
+                await reqAdminDeleteTag(id);
                 this.getTags();
             },
             onCancel() {
@@ -43,7 +43,7 @@ export default class AdminTags extends Component {
     // 点击确认
     onOk = async () => {
         const {inputValue} = this.state;
-        await reqAddTag(inputValue);
+        await reqAdminAddTag(inputValue);
         this.getTags();
         this.setState({
             visible: false,

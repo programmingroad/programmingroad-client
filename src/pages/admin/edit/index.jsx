@@ -3,7 +3,7 @@ import {Button, Card, Input, Modal, Select, message} from "antd";
 import ReactMarkdown from "react-markdown";
 
 import './index.less'
-import {reqAddArticle, reqAllTag} from "../../../api";
+import {reqAdminAddArticle, reqAdminAllTag} from "../../../api";
 
 
 const {Option} = Select;
@@ -22,7 +22,7 @@ export default class AdminEdit extends Component {
     }
 
     getTagList = async () => {
-        const data = await reqAllTag();
+        const data = await reqAdminAllTag();
         this.setState({
             tagList: data.body
         })
@@ -64,13 +64,13 @@ export default class AdminEdit extends Component {
 
     save = async () => {
         const article = this.getArticle("NOT_RELEASE");
-        await reqAddArticle(article);
+        await reqAdminAddArticle(article);
         message.success("保存成功");
     }
 
     release = async () => {
         const article = this.getArticle("RELEASED");
-        await reqAddArticle(article);
+        await reqAdminAddArticle(article);
         message.success("发布成功");
     }
 
