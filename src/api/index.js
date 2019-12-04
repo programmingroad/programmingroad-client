@@ -94,3 +94,9 @@ export const reqArticleList = (page, tagId) => ajax({
     }
 })
 
+// 获取指定文章
+export const reqArticle = (id) => ajax({
+    url: BASE + '/article/article/' + id,
+    method: 'GET'
+})
+

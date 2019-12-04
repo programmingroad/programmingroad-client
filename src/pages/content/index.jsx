@@ -1,17 +1,42 @@
 import React, {Component} from "react";
 import Header from "../../components/header";
 import ReactMarkdown from "react-markdown";
+import {reqArticle} from "../../api"
 
 import './index.less'
 
 export default class Content extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = ({
+            title: "",
+            content: ""
+        })
+    }
+
+    getArticle = async () => {
+        const id = this.props.match.params.id;
+        const data = await reqArticle(id);
+        this.setState({
+            title: data.body.title,
+            content: data.body.content
+        })
+    }
+
+    componentDidMount() {
+        this.getArticle();
+    }
+
     render() {
+        const {title, content} = this.state;
         return (
-            <div className={"detail-wrapper"}>
-                <Header title={this.props.title}></Header>
-                <div className={"detail-content"}>
-                    <ReactMarkdown source={this.props.content} style={{width: '50%'}}/>
+            <div className={"content-wrapper"}>
+                <Header title={title}></Header>
+                <div className={"content-body"}>
+                    <div className={"content-body-markdown"}>
+                        <ReactMarkdown source={content}/>
+                    </div>
                 </div>
             </div>
         )

@@ -20,7 +20,7 @@ class App extends Component {
                         <Switch>
                             <Route exact path='/login' component={Login}/>
                             <Route exact path='/callback' component={CallBack}/>
-                            <Route exact path='/content' component={Content}/>
+                            <Route exact path='/content/:id' component={Content}/>
                             <Route path='/admin' component={Admin}/>
                             <Route exact path='/' component={Blog}/>
                             <Redirect to={"/"}/>

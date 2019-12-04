@@ -4,6 +4,7 @@ import Header from "../../components/header";
 
 import './index.less'
 import {reqAllTag, reqArticleList} from "../../api";
+import {Link} from "react-router-dom";
 
 const {TabPane} = Tabs;
 
@@ -88,11 +89,12 @@ export default class Blog extends Component {
                                                     itemLayout="vertical"
                                                     renderItem={item => (
                                                         <List.Item
-                                                            actions={[<a key="list-loadmore-more">readMore >></a>]}
+                                                            actions={[<Link to={"/content/" + item.id} target={'_blank'}>
+                                                                readMore >>
+                                                            </Link>]}
                                                         >
                                                             <List.Item.Meta
                                                                 title={item.title}
-                                                                description={item.content}
                                                             />
                                                             <div>Article published in {item.createTime}</div>
                                                         </List.Item>
