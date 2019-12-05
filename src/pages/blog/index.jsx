@@ -14,6 +14,7 @@ export default class Blog extends Component {
         super(props);
         this.state = ({
             currPage: 1,
+            totalPage: 0,
             selectTagId: 0,
             tagList: [],
             articleList: []
@@ -33,7 +34,8 @@ export default class Blog extends Component {
         const data = await reqArticleList(page, tagId);
         this.setState({
             articleList: [...this.state.articleList, ...data.body],
-            currPage: page
+            currPage: page,
+            totalPage: data.page.totalPage
         })
     }
 
@@ -57,18 +59,20 @@ export default class Blog extends Component {
     }
 
     getLoadMore = () => {
-        const loadMore = (<div
-            style={{
-                textAlign: 'center',
-                marginTop: 20,
-                marginBottom: 50,
-                height: 32,
-                lineHeight: '32px',
-            }}
-        >
-            <Button onClick={this.onLoadMore}>loading more</Button>
-        </div>);
-        return loadMore;
+        return this.state.currPage < this.state.totalPage ?
+            (<div
+                style={{
+                    textAlign: 'center',
+                    marginTop: 20,
+                    marginBottom: 50,
+                    height: 32,
+                    lineHeight: '32px',
+                }}
+            >
+                <Button onClick={this.onLoadMore}>loading more</Button>
+            </div>)
+            :
+            null;
     }
 
     render() {
