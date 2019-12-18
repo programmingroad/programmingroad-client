@@ -3,6 +3,7 @@ import {Button, Card, Input, Modal, Table} from "antd";
 import {reqAdminAddTag, reqAdminAllTag, reqAdminDeleteTag} from "../../../api";
 
 import './index.less'
+import {Link} from "react-router-dom";
 
 
 const {Column} = Table;
@@ -20,20 +21,26 @@ export default class AdminTags extends Component {
     }
 
     // 获取标签
-    getTags = async () => {
-        const data = await reqAdminAllTag();
-        this.setState({
-            data: data.body
-        })
+    getTags = () => {
+        reqAdminAllTag().then(
+            data => {
+                this.setState({
+                    data: data.body
+                })
+            }
+        );
     }
 
     // 删除标签
     deleteTag = (id) => {
         confirm({
             title: '删除标签',
-            onOk: async () => {
-                await reqAdminDeleteTag(id);
-                this.getTags();
+            onOk: () => {
+                reqAdminDeleteTag(id).then(
+                    () => {
+                        this.getTags();
+                    }
+                );
             },
             onCancel() {
             },
@@ -41,14 +48,17 @@ export default class AdminTags extends Component {
     }
 
     // 点击确认
-    onOk = async () => {
+    onOk = () => {
         const {inputValue} = this.state;
-        await reqAdminAddTag(inputValue);
-        this.getTags();
-        this.setState({
-            visible: false,
-            inputValue: ''
-        });
+        reqAdminAddTag(inputValue).then(
+            () => {
+                this.getTags();
+                this.setState({
+                    visible: false,
+                    inputValue: ''
+                });
+            }
+        );
     };
 
     // 显示添加标签的modal
@@ -94,14 +104,16 @@ export default class AdminTags extends Component {
                         <Input placeholder="标签名称" onChange={this.onChange} value={inputValue}/>
                     </Modal>
                 </div>
-                <Table dataSource={data} pagination={false} tableLayout={"fixed"}>
+                <Table dataSource={data} pagination={false} tableLayout={"fixed"} rowKey={(record) => {
+                    return record.id
+                }}>
                     <Column title="名称" dataIndex="name" key="name"/>
                     <Column title="创建时间" dataIndex="createTime" key="createTime"/>
                     <Column
                         title="操作"
                         key="action"
                         render={(text, record) => (
-                            <a onClick={() => this.deleteTag(record.id)}>删除</a>
+                            <Link to="#" onClick={() => this.deleteTag(record.id)}>删除</Link>
                         )}
                     />
                 </Table>

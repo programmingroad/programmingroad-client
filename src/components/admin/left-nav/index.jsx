@@ -26,7 +26,7 @@ class AdminLeftNav extends Component {
     }
 
     //在第一次render()之前执行一次
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.menuNodes = this.getMenuNodes(menuList);
     }
 

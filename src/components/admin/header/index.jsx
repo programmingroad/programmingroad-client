@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Avatar, Button, Popover} from "antd";
 import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {reqLogout} from '../../../api'
 import cookie from "react-cookies";
 
@@ -9,12 +9,15 @@ import './index.less'
 
 class AdminHeader extends Component {
 
-    logout = async () => {
+    logout = () => {
+        // 阻止跳转
         const token = cookie.load("token");
-
         if (token) {
-            await reqLogout();
-            this.props.history.push('/login')
+            reqLogout().then(
+                () => {
+                    this.props.history.push('/login')
+                }
+            );
         }
     }
 
@@ -33,7 +36,7 @@ class AdminHeader extends Component {
                     }}/>
                 <Popover
                     placement="bottomRight"
-                    content={<a onClick={this.logout}>退出</a>}
+                    content={<Link to="#" onClick={this.logout}>退出</Link>}
                 >
                     <Avatar
                         src={avatarUrl}

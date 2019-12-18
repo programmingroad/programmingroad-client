@@ -15,13 +15,16 @@ export default class Content extends Component {
         })
     }
 
-    getArticle = async () => {
+    getArticle = () => {
         const id = this.props.match.params.id;
-        const data = await reqArticle(id);
-        this.setState({
-            title: data.body.title,
-            content: data.body.content
-        })
+        reqArticle(id).then(
+            data => {
+                this.setState({
+                    title: data.body.title,
+                    content: data.body.content
+                })
+            }
+        );
     }
 
     componentDidMount() {

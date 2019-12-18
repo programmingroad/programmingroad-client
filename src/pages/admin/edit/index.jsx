@@ -21,11 +21,14 @@ export default class AdminEdit extends Component {
         })
     }
 
-    getTagList = async () => {
-        const data = await reqAdminAllTag();
-        this.setState({
-            tagList: data.body
-        })
+    getTagList = () => {
+        reqAdminAllTag().then(
+            data => {
+                this.setState({
+                    tagList: data.body
+                })
+            }
+        );
     }
 
     componentDidMount() {
@@ -56,22 +59,28 @@ export default class AdminEdit extends Component {
         })
     }
 
-    changeSelect = (value) => {
+    changeSelect = (key) => {
         this.setState({
-            selectTagId: value
+            selectTagId: key
         })
     }
 
-    save = async () => {
+    save = () => {
         const article = this.getArticle("NOT_RELEASE");
-        await reqAdminAddArticle(article);
-        message.success("保存成功");
+        reqAdminAddArticle(article).then(
+            () => {
+                message.success("保存成功");
+            }
+        );
     }
 
-    release = async () => {
+    release = () => {
         const article = this.getArticle("RELEASED");
-        await reqAdminAddArticle(article);
-        message.success("发布成功");
+        reqAdminAddArticle(article).then(
+            () => {
+                message.success("发布成功");
+            }
+        );
     }
 
     getArticle = (released) => {
@@ -96,7 +105,7 @@ export default class AdminEdit extends Component {
                         {
                             tagList.map(
                                 item => {
-                                    return <Option value={item.id}>{item.name}</Option>
+                                    return <Option key={item.id}>{item.name}</Option>
                                 }
                             )
                         }

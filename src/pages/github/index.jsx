@@ -9,15 +9,22 @@ import './index.less'
 
 class CallBack extends Component {
 
-    getUserInfo = async () => {
+    getUserInfo = () => {
         const path = this.props.location.search;
         const param = path.substring(1);
-        const data = await reqLogin(param);
-        this.props.setAdmin(data.body)
-        this.props.history.push('/admin/home')
+        reqLogin(param).then(
+            data => {
+                this.props.setAdmin(data.body)
+                this.props.history.push('/admin/home')
+            }
+        ).catch(
+            () => {
+                this.props.history.push('/login')
+            }
+        )
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.getUserInfo();
     }
 
