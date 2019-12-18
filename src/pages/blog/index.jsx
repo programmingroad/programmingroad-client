@@ -23,11 +23,13 @@ export default class Blog extends Component {
 
     getTagList = async () => {
         const data = await reqAllTag();
+        const length = data.body.length;
+        const firstTagId = length ? data.body[0].id : 0;
         this.setState({
             tagList: data.body,
-            selectTagId: data.body[0].id
+            selectTagId: firstTagId
         })
-        return data.body[0].id;
+        return firstTagId;
     }
 
     getArticleList = async (page, tagId) => {
