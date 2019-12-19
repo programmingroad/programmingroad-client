@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import {reqArticle} from "../../api"
 
 import './index.less'
+import HeadingRenderer from "../../components/markdown/renderer/HeadingRenderer";
 
 export default class Content extends Component {
 
@@ -33,12 +34,14 @@ export default class Content extends Component {
 
     render() {
         const {title, content} = this.state;
+        const headingRenderer = (props) =>
+            <HeadingRenderer {...props} description={"123"}/>
         return (
             <div className={"content-wrapper"}>
                 <Header title={title}></Header>
                 <div className={"content-body"}>
                     <div className={"content-body-markdown"}>
-                        <ReactMarkdown source={content}/>
+                        <ReactMarkdown source={content} renderers={{heading: headingRenderer}}/>
                     </div>
                 </div>
             </div>
