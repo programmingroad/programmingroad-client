@@ -5,6 +5,9 @@ import {reqArticle} from "../../api"
 
 import './index.less'
 import HeadingRenderer from "../../components/markdown/renderer/HeadingRenderer";
+import {Anchor} from "antd";
+
+const {Link} = Anchor;
 
 export default class Content extends Component {
 
@@ -12,7 +15,8 @@ export default class Content extends Component {
         super(props);
         this.state = ({
             title: "",
-            content: ""
+            content: "",
+            anchors: []
         })
     }
 
@@ -28,20 +32,41 @@ export default class Content extends Component {
         );
     }
 
+    setAnchor = (id, title) => {
+        console.log("id: " + id)
+        console.log("title: " + title)
+        this.setState({
+            anchors: [{id, title}]
+        })
+    }
+
     componentDidMount() {
         this.getArticle();
     }
 
     render() {
-        const {title, content} = this.state;
+        const {title, content, anchors} = this.state;
         const headingRenderer = (props) =>
-            <HeadingRenderer {...props} description={"123"}/>
+            <HeadingRenderer {...props} setAnchor={this.setAnchor}/>
         return (
             <div className={"content-wrapper"}>
                 <Header title={title}></Header>
                 <div className={"content-body"}>
-                    <div className={"content-body-markdown"}>
-                        <ReactMarkdown source={content} renderers={{heading: headingRenderer}}/>
+                    <div className={"content-body-center"}>
+                        <div className={"content-body-center-markdown"}>
+                            <ReactMarkdown source={content} renderers={{heading: headingRenderer}}/>
+                        </div>
+                        <div className={"content-body-center-anchor"}>
+                            <Anchor>
+                                {/*{*/}
+                                {/*    anchors.map(item => {*/}
+                                {/*        return (*/}
+                                {/*            <Link href={"#" + item.id} title={item.title}/>*/}
+                                {/*        )*/}
+                                {/*    })*/}
+                                {/*}*/}
+                            </Anchor>
+                        </div>
                     </div>
                 </div>
             </div>
