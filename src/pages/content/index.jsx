@@ -5,19 +5,17 @@ import {reqArticle} from "../../api"
 
 import './index.less'
 import HeadingRenderer from "../../components/markdown/renderer/HeadingRenderer";
-import {Anchor} from "antd";
-
-const {Link} = Anchor;
+import MarkdownAnchor from "../../components/markdown/anchor";
 
 export default class Content extends Component {
 
     constructor(props) {
         super(props);
         this.state = ({
-            title: "",
-            content: "",
-            anchors: []
+            title: undefined,
+            content: undefined,
         })
+        this.id = 0;
     }
 
     getArticle = () => {
@@ -26,46 +24,32 @@ export default class Content extends Component {
             data => {
                 this.setState({
                     title: data.body.title,
-                    content: data.body.content
+                    content: data.body.content,
                 })
             }
         );
-    }
-
-    setAnchor = (id, title) => {
-        console.log("id: " + id)
-        console.log("title: " + title)
-        this.setState({
-            anchors: [{id, title}]
-        })
     }
 
     componentDidMount() {
         this.getArticle();
     }
 
+    headingRenderer = (props) => {
+        return <HeadingRenderer {...props} id={this.id++}/>
+    }
+
     render() {
-        const {title, content, anchors} = this.state;
-        const headingRenderer = (props) =>
-            <HeadingRenderer {...props} setAnchor={this.setAnchor}/>
+        const {title, content} = this.state;
         return (
             <div className={"content-wrapper"}>
                 <Header title={title}></Header>
                 <div className={"content-body"}>
                     <div className={"content-body-center"}>
                         <div className={"content-body-center-markdown"}>
-                            <ReactMarkdown source={content} renderers={{heading: headingRenderer}}/>
+                            <ReactMarkdown source={content} renderers={{heading: this.headingRenderer}}/>
                         </div>
                         <div className={"content-body-center-anchor"}>
-                            <Anchor>
-                                {/*{*/}
-                                {/*    anchors.map(item => {*/}
-                                {/*        return (*/}
-                                {/*            <Link href={"#" + item.id} title={item.title}/>*/}
-                                {/*        )*/}
-                                {/*    })*/}
-                                {/*}*/}
-                            </Anchor>
+                            <MarkdownAnchor/>
                         </div>
                     </div>
                 </div>
