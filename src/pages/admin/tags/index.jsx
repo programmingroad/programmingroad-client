@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Card, Input, Modal, Table} from "antd";
+import {Card, Icon, Input, Modal, Table} from "antd";
 import {reqAdminAddTag, reqAdminAllTag, reqAdminDeleteTag} from "../../../api";
 
 import './index.less'
@@ -88,25 +88,17 @@ export default class AdminTags extends Component {
     }
 
     render() {
-        const {data, inputValue} = this.state;
+        const {data, inputValue, visible} = this.state;
         return (
             <Card title={"标签管理"} style={{minHeight: "100%"}}>
-                <div className={'admin-tag-header'}>
-                    <Button type="primary" style={{marginLeft: '30px'}} onClick={this.showModal}>添加标签</Button>
-                    <Modal
-                        title="添加标签"
-                        visible={this.state.visible}
-                        onOk={this.onOk}
-                        onCancel={this.hideModal}
-                        okText="确认"
-                        cancelText="取消"
-                    >
-                        <Input placeholder="标签名称" onChange={this.onChange} value={inputValue}/>
-                    </Modal>
-                </div>
-                <Table dataSource={data} pagination={false} tableLayout={"fixed"} rowKey={(record) => {
-                    return record.id
-                }}>
+                <Table
+                    dataSource={data}
+                    pagination={false}
+                    tableLayout={"fixed"}
+                    rowKey={(record) => {
+                        return record.id
+                    }}
+                >
                     <Column title="名称" dataIndex="name" key="name"/>
                     <Column title="创建时间" dataIndex="createTime" key="createTime"/>
                     <Column
@@ -117,6 +109,19 @@ export default class AdminTags extends Component {
                         )}
                     />
                 </Table>
+                <a className={'admin-tag-add'} onClick={this.showModal}>
+                    <Icon type="plus" style={{fontSize: '30px'}}/>
+                </a>
+                <Modal
+                    title="添加标签"
+                    visible={visible}
+                    onOk={this.onOk}
+                    onCancel={this.hideModal}
+                    okText="确认"
+                    cancelText="取消"
+                >
+                    <Input placeholder="标签名称" onChange={this.onChange} value={inputValue}/>
+                </Modal>
             </Card>
         )
     }
