@@ -18,7 +18,9 @@ class HeadingRenderer extends Component {
                 id: "heading-" + this.props.id,
                 title: this.props.children
             }
-            this.props.addAnchor(this.anchor);
+            if (this.props.level === 1) {
+                this.props.addAnchor(this.anchor);
+            }
         }
         return React.createElement('h' + this.anchor.level, {id: this.anchor.id}, this.anchor.title);
     }
