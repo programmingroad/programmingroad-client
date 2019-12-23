@@ -40,11 +40,13 @@ export const reqAdminDeleteArticle = (id) => ajax({
 })
 
 // 获取文章列表
-export const reqAdminArticleList = (page) => ajax({
+export const reqAdminArticleList = (page, tagId, released) => ajax({
     url: BASE + '/admin/article/listPage',
     method: 'GET',
     params: {
-        page
+        page,
+        tagId,
+        released
     }
 })
 

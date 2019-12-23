@@ -9,6 +9,7 @@ import AdminTags from "./tags";
 import AdminArticles from "./articles";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
+import AdminDrafts from "./drafts";
 
 const {Content, Sider} = Layout;
 
@@ -29,6 +30,7 @@ class Admin extends Component {
                                 <Route exact path='/admin/edit' component={AdminEdit}/>
                                 <Route exact path='/admin/tags' component={AdminTags}/>
                                 <Route exact path='/admin/articles' component={AdminArticles}/>
+                                <Route exact path='/admin/drafts' component={AdminDrafts}/>
                                 <Redirect to='/admin/home'/>
                             </Switch>
                         </Content>

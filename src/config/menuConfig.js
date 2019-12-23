@@ -17,8 +17,13 @@ const menuList = [
     {
         title: '文章管理',
         key: '/admin/articles',
-        icon: 'folder-open',
+        icon: 'file',
     },
+    {
+        title: '草稿管理',
+        key: '/admin/drafts',
+        icon: 'file'
+    }
 ]
 
 export default menuList

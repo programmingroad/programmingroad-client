@@ -7,7 +7,7 @@ const {Column} = Table;
 const {confirm} = Modal;
 const {TabPane} = Tabs;
 
-export default class AdminArticles extends Component {
+export default class AdminDrafts extends Component {
 
     constructor(props) {
         super(props);
@@ -32,7 +32,7 @@ export default class AdminArticles extends Component {
     }
 
     getArticleList = async (page, tagId) => {
-        const data = await reqAdminArticleList(page, tagId, 'RELEASED');
+        const data = await reqAdminArticleList(page, tagId, 'NOT_RELEASE');
         this.setState({
             articleList: data.body,
             currPage: data.page.currPage,
@@ -69,7 +69,7 @@ export default class AdminArticles extends Component {
     render() {
         const {articleList, currPage, totalCount, tagList} = this.state;
         return (
-            <Card title={"文章管理"} style={{minHeight: "100%"}}>
+            <Card title={"草稿管理"} style={{minHeight: "100%"}}>
                 {
                     tagList.length > 0 ?
                         <Tabs onChange={this.onChange}>
@@ -99,6 +99,8 @@ export default class AdminArticles extends Component {
                                                                       onClick={() => this.deleteArticle(record.id)}>删除</Link>
                                                                 <Divider type="vertical"/>
                                                                 <Link to={"#"}>编辑</Link>
+                                                                <Divider type="vertical"/>
+                                                                <Link to={"#"}>发布</Link>
                                                             </span>
                                                     )}
                                                 />

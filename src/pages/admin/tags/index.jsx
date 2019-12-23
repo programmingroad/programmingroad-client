@@ -109,9 +109,9 @@ export default class AdminTags extends Component {
                         )}
                     />
                 </Table>
-                <a className={'admin-tag-add'} onClick={this.showModal}>
+                <Link to={"#"} className={'admin-tag-add'} onClick={this.showModal}>
                     <Icon type="plus" style={{fontSize: '30px'}}/>
-                </a>
+                </Link>
                 <Modal
                     title="添加标签"
                     visible={visible}
