@@ -81,7 +81,7 @@ export default class Blog extends Component {
         const {tagList, articleList} = this.state;
         return (
             <div className={"blog-wrapper"}>
-                <Header title={"Hello World"}></Header>
+                <Header title={"Blog"}></Header>
                 <div className={"blog-content"}>
                     {
                         tagList.length > 0 ?
@@ -102,7 +102,7 @@ export default class Blog extends Component {
                                                             <List.Item.Meta
                                                                 title={item.title}
                                                             />
-                                                            <div>Article published in {item.createTime}</div>
+                                                            <div>Article created by {item.createTime}</div>
                                                         </List.Item>
                                                     )}
                                                 />

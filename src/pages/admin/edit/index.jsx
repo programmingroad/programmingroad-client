@@ -66,24 +66,18 @@ export default class AdminEdit extends Component {
     }
 
     save = () => {
-        const article = this.getArticle("NOT_RELEASE");
-        reqAdminAddArticle(article).then(
-            () => {
-                message.success("保存成功");
-            }
-        );
+        this.addArticle("NOT_RELEASE", "保存成功");
     }
 
     release = () => {
-        const article = this.getArticle("RELEASED");
-        reqAdminAddArticle(article).then(
-            () => {
-                message.success("发布成功");
-            }
-        );
+        this.addArticle("RELEASED", "发布成功")
     }
 
-    getArticle = (released) => {
+    addArticle = (released, tip) => {
+        if (!this.state.selectTagId) {
+            message.warn("请选择标签");
+            return;
+        }
         const {selectTagId, title, content} = this.state;
         const article = ({
             tagId: selectTagId,
@@ -91,7 +85,15 @@ export default class AdminEdit extends Component {
             content,
             released
         });
-        return article;
+        reqAdminAddArticle(article).then(
+            () => {
+                message.success(tip);
+                this.setState({
+                    title: "",
+                    content: "",
+                })
+            }
+        );
     }
 
     render() {
