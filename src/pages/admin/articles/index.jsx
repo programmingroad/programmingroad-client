@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Card, Divider, Modal, Table, Tabs} from "antd";
-import {reqAdminAllTag, reqAdminArticleList, reqAdminDeleteArticle} from "../../../api";
+import {reqAdminArticleList, reqAdminDeleteArticle, reqAllTag} from "../../../api";
 import {Link} from "react-router-dom";
 
 const {Column} = Table;
@@ -27,7 +27,7 @@ export default class AdminArticles extends Component {
     }
 
     getTagList = async () => {
-        const data = await reqAdminAllTag();
+        const data = await reqAllTag();
         const length = data.body.length;
         const firstTagId = length ? data.body[0].id : 0;
         this.setState({
@@ -54,7 +54,7 @@ export default class AdminArticles extends Component {
             onOk: () => {
                 reqAdminDeleteArticle(id).then(
                     () => {
-                        this.getArticleList(this.state.currPage,this.state.selectTagId);
+                        this.getArticleList(this.state.currPage, this.state.selectTagId);
                     }
                 );
             },
@@ -79,7 +79,7 @@ export default class AdminArticles extends Component {
     }
 
     render() {
-        const {articleList, currPage, totalCount, tagList,loading} = this.state;
+        const {articleList, currPage, totalCount, tagList, loading} = this.state;
         return (
             <Card title={"文章管理"} style={{minHeight: "100%"}}>
                 {

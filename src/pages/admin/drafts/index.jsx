@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Card, Divider, Modal, Table, Tabs} from "antd";
-import {reqAdminAllTag, reqAdminArticleList, reqAdminDeleteArticle} from "../../../api";
+import {reqAdminArticleList, reqAdminDeleteArticle, reqAllTag} from "../../../api";
 import {Link} from "react-router-dom";
 
 const {Column} = Table;
@@ -27,7 +27,7 @@ export default class AdminDrafts extends Component {
     }
 
     getTagList = async () => {
-        const data = await reqAdminAllTag();
+        const data = await reqAllTag();
         const length = data.body.length;
         const firstTagId = length ? data.body[0].id : 0;
         this.setState({
