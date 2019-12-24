@@ -17,6 +17,7 @@ export default class AdminDrafts extends Component {
             totalCount: 0,
             selectTagId: 0,
             tagList: [],
+            loading: true
         }
     }
 
@@ -36,7 +37,8 @@ export default class AdminDrafts extends Component {
         this.setState({
             articleList: data.body,
             currPage: data.page.currPage,
-            totalPage: data.page.totalPage
+            totalPage: data.page.totalPage,
+            loading: false
         })
     }
 
@@ -67,7 +69,7 @@ export default class AdminDrafts extends Component {
     }
 
     render() {
-        const {articleList, currPage, totalCount, tagList} = this.state;
+        const {articleList, currPage, totalCount, tagList, loading} = this.state;
         return (
             <Card title={"草稿管理"} style={{minHeight: "100%"}}>
                 {
@@ -87,6 +89,7 @@ export default class AdminDrafts extends Component {
                                                 rowKey={(record) => {
                                                     return record.id
                                                 }}
+                                                loading={loading}
                                             >
                                                 <Column title="标题" dataIndex="title" key="title"/>
                                                 <Column title="创建时间" dataIndex="createTime" key="createTime"/>

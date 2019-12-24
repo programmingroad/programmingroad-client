@@ -17,12 +17,12 @@ const menuList = [
     {
         title: '文章管理',
         key: '/admin/articles',
-        icon: 'file',
+        icon: 'file-markdown',
     },
     {
         title: '草稿管理',
         key: '/admin/drafts',
-        icon: 'file'
+        icon: 'file-markdown'
     }
 ]
 

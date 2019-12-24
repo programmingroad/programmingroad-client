@@ -16,7 +16,8 @@ export default class AdminTags extends Component {
         this.state = {
             inputValue: '',
             data: [],
-            visible: false
+            visible: false,
+            loading: true
         }
     }
 
@@ -25,7 +26,8 @@ export default class AdminTags extends Component {
         reqAdminAllTag().then(
             data => {
                 this.setState({
-                    data: data.body
+                    data: data.body,
+                    loading: false
                 })
             }
         );
@@ -88,7 +90,7 @@ export default class AdminTags extends Component {
     }
 
     render() {
-        const {data, inputValue, visible} = this.state;
+        const {data, inputValue, visible, loading} = this.state;
         return (
             <Card title={"标签管理"} style={{minHeight: "100%"}}>
                 <Table
@@ -98,6 +100,7 @@ export default class AdminTags extends Component {
                     rowKey={(record) => {
                         return record.id
                     }}
+                    loading={loading}
                 >
                     <Column title="名称" dataIndex="name" key="name"/>
                     <Column title="创建时间" dataIndex="createTime" key="createTime"/>
