@@ -27,7 +27,7 @@ class Admin extends Component {
                         <Content>
                             <Switch>
                                 <Route exact path='/admin/home' component={AdminHome}/>
-                                <Route exact path='/admin/edit' component={AdminEdit}/>
+                                <Route exact path='/admin/edit/:id?' component={AdminEdit}/>
                                 <Route exact path='/admin/tags' component={AdminTags}/>
                                 <Route exact path='/admin/articles' component={AdminArticles}/>
                                 <Route exact path='/admin/drafts' component={AdminDrafts}/>

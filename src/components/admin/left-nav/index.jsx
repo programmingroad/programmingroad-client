@@ -8,6 +8,12 @@ import './index.less'
 
 class AdminLeftNav extends Component {
 
+
+    //在第一次render()之前执行一次
+    UNSAFE_componentWillMount() {
+        this.menuNodes = this.getMenuNodes(menuList);
+    }
+
     /*
     根据menu的数据数组生成对应的标签数组
     使用map() + 递归调用
@@ -23,11 +29,6 @@ class AdminLeftNav extends Component {
                 </Menu.Item>
             )
         })
-    }
-
-    //在第一次render()之前执行一次
-    UNSAFE_componentWillMount() {
-        this.menuNodes = this.getMenuNodes(menuList);
     }
 
     render() {

@@ -21,6 +21,11 @@ export default class AdminTags extends Component {
         }
     }
 
+    // 页面render后获取全部的标签
+    componentDidMount() {
+        this.getTags();
+    }
+
     // 获取标签
     getTags = () => {
         reqAdminAllTag().then(
@@ -82,11 +87,6 @@ export default class AdminTags extends Component {
         this.setState({
             inputValue: e.target.value
         })
-    }
-
-    // 页面render后获取全部的标签
-    componentDidMount() {
-        this.getTags();
     }
 
     render() {

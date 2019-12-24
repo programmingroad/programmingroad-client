@@ -9,6 +9,10 @@ import './index.less'
 
 class CallBack extends Component {
 
+    UNSAFE_componentWillMount() {
+        this.getUserInfo();
+    }
+
     getUserInfo = () => {
         const path = this.props.location.search;
         const param = path.substring(1);
@@ -22,10 +26,6 @@ class CallBack extends Component {
                 this.props.history.push('/login')
             }
         )
-    }
-
-    UNSAFE_componentWillMount() {
-        this.getUserInfo();
     }
 
     render() {

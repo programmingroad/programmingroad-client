@@ -21,6 +21,11 @@ export default class AdminDrafts extends Component {
         }
     }
 
+    async componentDidMount() {
+        let tagId = await this.getTagList();
+        this.getArticleList(this.state.currPage, tagId)
+    }
+
     getTagList = async () => {
         const data = await reqAdminAllTag();
         const length = data.body.length;
@@ -49,7 +54,7 @@ export default class AdminDrafts extends Component {
             onOk: () => {
                 reqAdminDeleteArticle(id).then(
                     () => {
-                        this.getArticles(this.state.currPage);
+                        this.getArticleList(this.state.currPage, this.state.selectTagId);
                     }
                 );
             },
@@ -58,14 +63,19 @@ export default class AdminDrafts extends Component {
         })
     }
 
-    onChange = (pagination) => {
+    tableOnChange = (pagination) => {
         const {current} = pagination;
         this.getArticleList(current, this.state.selectTagId);
     }
 
-    async componentDidMount() {
-        let tagId = await this.getTagList();
-        this.getArticleList(this.state.currPage, tagId)
+    tabsOnChange = (key) => {
+        this.setState({
+            currPage: 1,
+            selectTagId: key,
+            articleList: []
+        }, () => {
+            this.getArticleList(this.state.currPage, this.state.selectTagId)
+        })
     }
 
     render() {
@@ -74,7 +84,7 @@ export default class AdminDrafts extends Component {
             <Card title={"草稿管理"} style={{minHeight: "100%"}}>
                 {
                     tagList.length > 0 ?
-                        <Tabs onChange={this.onChange}>
+                        <Tabs onChange={this.tabsOnChange}>
                             {
                                 tagList.map(item => (
                                         <TabPane tab={item.name} key={item.id}>
@@ -84,7 +94,7 @@ export default class AdminDrafts extends Component {
                                                     current: currPage,
                                                     total: totalCount
                                                 }}
-                                                onChange={this.onChange}
+                                                onChange={this.tableOnChange}
                                                 tableLayout={"fixed"}
                                                 rowKey={(record) => {
                                                     return record.id

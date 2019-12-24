@@ -21,6 +21,11 @@ export default class Blog extends Component {
         })
     }
 
+    async componentDidMount() {
+        let tagId = await this.getTagList();
+        this.getArticleList(this.state.currPage, tagId)
+    }
+
     getTagList = async () => {
         const data = await reqAllTag();
         const length = data.body.length;
@@ -39,11 +44,6 @@ export default class Blog extends Component {
             currPage: page,
             totalPage: data.page.totalPage
         })
-    }
-
-    async componentDidMount() {
-        let tagId = await this.getTagList();
-        this.getArticleList(this.state.currPage, tagId)
     }
 
     onLoadMore = () => {

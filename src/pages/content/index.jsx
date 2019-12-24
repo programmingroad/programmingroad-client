@@ -18,6 +18,10 @@ export default class Content extends Component {
         this.id = 0;
     }
 
+    componentDidMount() {
+        this.getArticle();
+    }
+
     getArticle = () => {
         const id = this.props.match.params.id;
         reqArticle(id).then(
@@ -28,10 +32,6 @@ export default class Content extends Component {
                 })
             }
         );
-    }
-
-    componentDidMount() {
-        this.getArticle();
     }
 
     headingRenderer = (props) => {

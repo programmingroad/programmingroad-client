@@ -3,8 +3,13 @@ import {Button, Card, Input, Modal, Select, message} from "antd";
 import ReactMarkdown from "react-markdown";
 
 import './index.less'
-import {reqAdminAddArticle, reqAdminAllTag} from "../../../api";
-
+import {
+    reqAdminAllTag,
+    reqAdminArticle,
+    reqAdminReleaseArticle,
+    reqAdminSaveArticle,
+    reqAdminUpdateArticle
+} from "../../../api";
 
 const {Option} = Select;
 
@@ -17,8 +22,25 @@ export default class AdminEdit extends Component {
             content: "",
             visible: false,
             selectTagId: 0,
-            tagList: []
+            tagList: [],
+            operateFinish: false
         })
+    }
+
+    componentDidMount() {
+        const id = this.props.match.params.id;
+        // 如果id存在 获取该文章的content,title,tagId
+        if (id) {
+            reqAdminArticle(id).then(data => {
+                    this.setState({
+                        title: data.body.title,
+                        content: data.body.content,
+                        selectTagId: data.body.tagId,
+                    })
+                }
+            );
+        }
+        this.getTagList();
     }
 
     getTagList = () => {
@@ -29,10 +51,6 @@ export default class AdminEdit extends Component {
                 })
             }
         );
-    }
-
-    componentDidMount() {
-        this.getTagList();
     }
 
     preview = () => {
@@ -48,62 +66,82 @@ export default class AdminEdit extends Component {
     };
 
     changeContent = (e) => {
+        if (this.props.match.params.id) {
+            reqAdminUpdateArticle(this.props.match.params.id, {
+                tagId: this.state.selectTagId,
+                title: this.state.title,
+                content: e.target.value
+            });
+        }
         this.setState({
             content: e.target.value
         })
     }
 
     changeTitle = (e) => {
+        if (this.props.match.params.id) {
+            reqAdminUpdateArticle(this.props.match.params.id, {
+                tagId: this.state.selectTagId,
+                title: e.target.value,
+                content: this.state.content
+            });
+        }
         this.setState({
             title: e.target.value
         })
     }
 
-    changeSelect = (key) => {
+    changeTag = (key) => {
+        if (this.state.selectTagId === 0) {
+            reqAdminSaveArticle({
+                tagId: key,
+                title: this.state.title,
+                content: this.state.content,
+            }).then(data => {
+                this.props.history.replace("/admin/edit/" + data.body.id);
+            })
+        } else {
+            reqAdminUpdateArticle(this.props.match.params.id, {
+                tagId: key,
+                title: this.state.title,
+                content: this.state.content
+            });
+        }
         this.setState({
             selectTagId: key
         })
     }
 
-    save = () => {
-        this.addArticle("NOT_RELEASE", "保存成功");
-    }
-
     release = () => {
-        this.addArticle("RELEASED", "发布成功")
-    }
-
-    addArticle = (released, tip) => {
-        if (!this.state.selectTagId) {
-            message.warn("请选择标签");
-            return;
+        if (this.props.match.params.id) {
+            reqAdminReleaseArticle(this.props.match.params.id).then(
+                () => {
+                    message.success("发布成功");
+                    this.setState({
+                        title: "",
+                        content: "",
+                    })
+                }
+            );
         }
-        const {selectTagId, title, content} = this.state;
-        const article = ({
-            tagId: selectTagId,
-            title,
-            content,
-            released
-        });
-        reqAdminAddArticle(article).then(
-            () => {
-                message.success(tip);
-                this.setState({
-                    title: "",
-                    content: "",
-                })
-            }
-        );
     }
 
     render() {
-        const {content, title, tagList} = this.state;
+        const {content, title, tagList, selectTagId,operateFinish} = this.state;
         return (
             <Card title={"写博客"} style={{height: "100%"}} className={"admin-edit-ant-card"}>
                 <div className={"admin-edit-header"}>
-                    <Input placeholder={"请输入标题"} style={{marginRight: '30px'}} value={title}
-                           onChange={this.changeTitle}/>
-                    <Select defaultValue="请选择标签" style={{width: 180}} onChange={this.changeSelect}>
+                    <Input
+                        placeholder={"请输入标题"}
+                        style={{marginRight: '30px'}}
+                        value={title}
+                        onChange={this.changeTitle}
+                    />
+                    <Select
+                        defaultValue={selectTagId ? selectTagId : "请选择标签"}
+                        style={{width: 180}}
+                        onChange={this.changeTag}
+                    >
                         {
                             tagList.map(
                                 item => {
@@ -123,7 +161,6 @@ export default class AdminEdit extends Component {
                     >
                         <ReactMarkdown source={content}/>
                     </Modal>
-                    <Button type="primary" style={{marginLeft: '10px'}} onClick={this.save}>保存</Button>
                     <Button type="primary" style={{marginLeft: '10px'}} onClick={this.release}>发布</Button>
                 </div>
                 <textarea
