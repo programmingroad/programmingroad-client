@@ -3,13 +3,7 @@ import {Button, Card, Input, Modal, Select, message} from "antd";
 import ReactMarkdown from "react-markdown";
 
 import './index.less'
-import {
-    reqAdminAllTag,
-    reqAdminArticle,
-    reqAdminReleaseArticle,
-    reqAdminSaveArticle,
-    reqAdminUpdateArticle
-} from "../../../api";
+import {reqAdminAddArticle, reqAdminAllTag, reqAdminArticle} from "../../../api";
 
 const {Option} = Select;
 
@@ -23,7 +17,6 @@ export default class AdminEdit extends Component {
             visible: false,
             selectTagId: 0,
             tagList: [],
-            operateFinish: false
         })
     }
 
@@ -66,68 +59,53 @@ export default class AdminEdit extends Component {
     };
 
     changeContent = (e) => {
-        if (this.props.match.params.id) {
-            reqAdminUpdateArticle(this.props.match.params.id, {
-                tagId: this.state.selectTagId,
-                title: this.state.title,
-                content: e.target.value
-            });
-        }
         this.setState({
             content: e.target.value
         })
     }
 
     changeTitle = (e) => {
-        if (this.props.match.params.id) {
-            reqAdminUpdateArticle(this.props.match.params.id, {
-                tagId: this.state.selectTagId,
-                title: e.target.value,
-                content: this.state.content
-            });
-        }
         this.setState({
             title: e.target.value
         })
     }
 
     changeTag = (key) => {
-        if (this.state.selectTagId === 0) {
-            reqAdminSaveArticle({
-                tagId: key,
-                title: this.state.title,
-                content: this.state.content,
-            }).then(data => {
-                this.props.history.replace("/admin/edit/" + data.body.id);
-            })
-        } else {
-            reqAdminUpdateArticle(this.props.match.params.id, {
-                tagId: key,
-                title: this.state.title,
-                content: this.state.content
-            });
-        }
         this.setState({
             selectTagId: key
         })
     }
 
+    save = () => {
+        this.addArticle("NOT_RELEASE");
+    }
+
     release = () => {
-        if (this.props.match.params.id) {
-            reqAdminReleaseArticle(this.props.match.params.id).then(
-                () => {
-                    message.success("发布成功");
-                    this.setState({
-                        title: "",
-                        content: "",
-                    })
-                }
-            );
+        this.addArticle("RELEASED");
+    }
+
+    addArticle = (released) => {
+        if (this.state.selectTagId) {
+            reqAdminAddArticle({
+                tagId: this.state.selectTagId,
+                title: this.state.title,
+                content: this.state.content,
+                released
+            }).then(() => {
+                message.success(released === "RELEASED" ? "发布成功" : "保存成功");
+                this.setState({
+                    title: "",
+                    content: "",
+                    selectTagId: 0,
+                })
+            })
+        } else {
+            message.warn("请选择标签")
         }
     }
 
     render() {
-        const {content, title, tagList, selectTagId,operateFinish} = this.state;
+        const {content, title, tagList, selectTagId} = this.state;
         return (
             <Card title={"写博客"} style={{height: "100%"}} className={"admin-edit-ant-card"}>
                 <div className={"admin-edit-header"}>
@@ -138,14 +116,15 @@ export default class AdminEdit extends Component {
                         onChange={this.changeTitle}
                     />
                     <Select
-                        defaultValue={selectTagId ? selectTagId : "请选择标签"}
+                        value={selectTagId ? selectTagId : "请选择标签"}
+                        placeholder={"请选择标签"}
                         style={{width: 180}}
                         onChange={this.changeTag}
                     >
                         {
                             tagList.map(
                                 item => {
-                                    return <Option key={item.id}>{item.name}</Option>
+                                    return <Option key={item.id} value={item.id}>{item.name}</Option>
                                 }
                             )
                         }
@@ -161,6 +140,7 @@ export default class AdminEdit extends Component {
                     >
                         <ReactMarkdown source={content}/>
                     </Modal>
+                    <Button type="primary" style={{marginLeft: '10px'}} onClick={this.save}>保存</Button>
                     <Button type="primary" style={{marginLeft: '10px'}} onClick={this.release}>发布</Button>
                 </div>
                 <textarea

@@ -26,17 +26,11 @@ export const reqAdminAddTag = (name) => ajax({
     }
 })
 
-// 保存文章
-export const reqAdminSaveArticle = (article) => ajax({
-    url: BASE + '/admin/article/save',
+// 添加文章
+export const reqAdminAddArticle = (article) => ajax({
+    url: BASE + '/admin/article/add',
     method: 'PUT',
     data: article
-})
-
-// 发布文章
-export const reqAdminReleaseArticle = (id) => ajax({
-    url: BASE + '/admin/article/release/' + id,
-    method: 'PATCH',
 })
 
 // 删除文章
