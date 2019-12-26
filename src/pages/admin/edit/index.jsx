@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Card, Input, Modal, Select, message} from "antd";
+import {Button, Card, Icon, Input, message, Modal, Select, Upload} from "antd";
 import ReactMarkdown from "react-markdown";
 
 import './index.less'
@@ -133,6 +133,20 @@ export default class AdminEdit extends Component {
         })
     }
 
+    uploadOnChange = (info) => {
+        if (info.file.status === 'done') {
+            message.success(`上传成功`);
+            this.setState({
+                article: {
+                    ...this.state.article,
+                    content: info.file.response.body.url
+                }
+            })
+        } else if (info.file.status === 'error') {
+            message.error(`上传失败`);
+        }
+    }
+
     render() {
         const {article, tagList} = this.state;
         return (
@@ -172,6 +186,16 @@ export default class AdminEdit extends Component {
                     <Button type="primary" style={{marginLeft: '10px'}} onClick={this.save}>更新/保存</Button>
                     <Button type="primary" style={{marginLeft: '10px'}} onClick={this.release}
                             disabled={article.released === "RELEASED"}>发布</Button>
+                </div>
+                <div className={"admin-edit-toolbar"}>
+                    <Upload
+                        action={"/api/admin/image/upload"}
+                        name={"multipartFile"}
+                        onChange={this.uploadOnChange}
+                        showUploadList={false}
+                    >
+                        <Icon type="file-image" style={{fontSize: 20, cursor: "pointer"}}/>
+                    </Upload>
                 </div>
                 <textarea
                     className={"admin-edit-content"}

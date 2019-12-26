@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {Button, Card, Divider, Modal, Table, Tabs} from "antd";
 import {reqAdminArticleList, reqAdminDeleteArticle, reqAllTag} from "../../../api";
 
-import './index.less'
 import {Link} from "react-router-dom";
 
 const {Column} = Table;
