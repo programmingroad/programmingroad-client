@@ -3,7 +3,7 @@ import {Button, Card, Input, Modal, Select, message} from "antd";
 import ReactMarkdown from "react-markdown";
 
 import './index.less'
-import {reqAdminAddArticle, reqAdminAllTag, reqAdminArticle} from "../../../api";
+import {reqAdminAddArticle, reqAdminAllTag, reqAdminArticle, reqAdminUpdateArticle} from "../../../api";
 
 const {Option} = Select;
 
@@ -12,10 +12,8 @@ export default class AdminEdit extends Component {
     constructor(props) {
         super(props)
         this.state = ({
-            title: "",
-            content: "",
+            article: {},
             visible: false,
-            selectTagId: 0,
             tagList: [],
         })
     }
@@ -26,9 +24,7 @@ export default class AdminEdit extends Component {
         if (id) {
             reqAdminArticle(id).then(data => {
                     this.setState({
-                        title: data.body.title,
-                        content: data.body.content,
-                        selectTagId: data.body.tagId,
+                        article: data.body
                     })
                 }
             );
@@ -60,63 +56,97 @@ export default class AdminEdit extends Component {
 
     changeContent = (e) => {
         this.setState({
-            content: e.target.value
+            article: {
+                ...this.state.article,
+                content: e.target.value
+            }
         })
     }
 
     changeTitle = (e) => {
         this.setState({
-            title: e.target.value
+            article: {
+                ...this.state.article,
+                title: e.target.value
+            }
         })
     }
 
-    changeTag = (key) => {
+    changeTag = (tagId) => {
         this.setState({
-            selectTagId: key
+            article: {
+                ...this.state.article,
+                tagId
+            }
         })
     }
 
     save = () => {
-        this.addArticle("NOT_RELEASE");
-    }
-
-    release = () => {
-        this.addArticle("RELEASED");
-    }
-
-    addArticle = (released) => {
-        if (this.state.selectTagId) {
-            reqAdminAddArticle({
-                tagId: this.state.selectTagId,
-                title: this.state.title,
-                content: this.state.content,
-                released
-            }).then(() => {
-                message.success(released === "RELEASED" ? "发布成功" : "保存成功");
-                this.setState({
-                    title: "",
-                    content: "",
-                    selectTagId: 0,
+        // 必须要有标签id
+        if (this.state.article.tagId) {
+            // 判断是否有文章id 有id更新
+            if (this.state.article.id) {
+                reqAdminUpdateArticle(this.state.article.id, this.state.article).then(() => {
+                    message.success("更新成功");
+                    this.clearArticle();
                 })
-            })
+            } else {
+                reqAdminAddArticle(this.state.article).then(() => {
+                    message.success("保存成功");
+                    this.clearArticle();
+                })
+            }
         } else {
             message.warn("请选择标签")
         }
     }
 
+    release = () => {
+        // 必须要有标签id
+        if (this.state.article.tagId) {
+            // 判断是否有文章id 有id更新
+            if (this.state.article.id) {
+                reqAdminUpdateArticle(this.state.article.id, {
+                    ...this.state.article,
+                    released: "RELEASED"
+                }).then(() => {
+                    message.success("发布成功");
+                    this.clearArticle();
+                })
+            } else {
+                reqAdminAddArticle({
+                    ...this.state.article,
+                    released: "RELEASED"
+                }).then(() => {
+                    message.success("发布成功");
+                    this.clearArticle();
+                })
+            }
+        } else {
+            message.warn("请选择标签")
+        }
+    }
+
+    clearArticle = () => {
+        this.setState({
+            article: {}
+        })
+    }
+
     render() {
-        const {content, title, tagList, selectTagId} = this.state;
+        const {article, tagList} = this.state;
+        console.log(article)
         return (
             <Card title={"写博客"} style={{height: "100%"}} className={"admin-edit-ant-card"}>
                 <div className={"admin-edit-header"}>
                     <Input
                         placeholder={"请输入标题"}
                         style={{marginRight: '30px'}}
-                        value={title}
+                        value={article.title ? article.title : ""}
                         onChange={this.changeTitle}
                     />
                     <Select
-                        value={selectTagId ? selectTagId : "请选择标签"}
+                        value={article.tagId ? article.tagId : "请选择标签"}
                         placeholder={"请选择标签"}
                         style={{width: 180}}
                         onChange={this.changeTag}
@@ -138,15 +168,16 @@ export default class AdminEdit extends Component {
                         footer={null}
                         wrapClassName={'admin-edit-modal'}
                     >
-                        <ReactMarkdown source={content}/>
+                        <ReactMarkdown source={article.content ? article.content : ""}/>
                     </Modal>
-                    <Button type="primary" style={{marginLeft: '10px'}} onClick={this.save}>保存</Button>
-                    <Button type="primary" style={{marginLeft: '10px'}} onClick={this.release}>发布</Button>
+                    <Button type="primary" style={{marginLeft: '10px'}} onClick={this.save}>更新/保存</Button>
+                    <Button type="primary" style={{marginLeft: '10px'}} onClick={this.release}
+                            disabled={article.released === "RELEASED"}>发布</Button>
                 </div>
                 <textarea
                     className={"admin-edit-content"}
                     onChange={this.changeContent}
-                    value={content}
+                    value={article.content ? article.content : ""}
                 >
                 </textarea>
             </Card>

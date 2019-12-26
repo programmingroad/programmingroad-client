@@ -32,8 +32,8 @@ class AdminLeftNav extends Component {
     }
 
     render() {
-        // 获取当前请求的路由路径
-        const path = this.props.location.pathname;
+        // 获取匹配的item
+        const item = menuList.find(item => this.props.location.pathname.match(item.key));
 
         const {login, avatarUrl} = this.props.admin;
 
@@ -52,7 +52,7 @@ class AdminLeftNav extends Component {
                 <Menu
                     mode="inline"
                     theme="dark"
-                    selectedKeys={[path]}
+                    selectedKeys={[item.key]}
                 >
                     {
                         this.menuNodes

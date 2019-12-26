@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Card, Divider, Modal, Table, Tabs} from "antd";
-import {reqAdminArticleList, reqAdminDeleteArticle, reqAllTag} from "../../../api";
+import {Card, Divider, Modal, Table, Tabs, message, Button} from "antd";
+import {reqAdminArticleList, reqAdminDeleteArticle, reqAdminUpdateArticle, reqAllTag} from "../../../api";
 import {Link} from "react-router-dom";
 
 const {Column} = Table;
@@ -63,6 +63,21 @@ export default class AdminDrafts extends Component {
         })
     }
 
+    // 编辑文章
+    edit = (id) => {
+        this.props.history.push("/admin/edit/" + id);
+    }
+
+    // 发布文章
+    release = (id) => {
+        reqAdminUpdateArticle(id, {
+            released: "RELEASED"
+        }).then(() => {
+            message.success("发布成功");
+            this.getArticleList(this.state.currPage, this.state.selectTagId)
+        })
+    }
+
     tableOnChange = (pagination) => {
         const {current} = pagination;
         this.getArticleList(current, this.state.selectTagId);
@@ -108,12 +123,14 @@ export default class AdminDrafts extends Component {
                                                     key="action"
                                                     render={(text, record) => (
                                                         <span>
-                                                                <Link to={"#"}
-                                                                      onClick={() => this.deleteArticle(record.id)}>删除</Link>
+                                                                <Button type={"primary"}
+                                                                        onClick={() => this.deleteArticle(record.id)}>删除</Button>
                                                                 <Divider type="vertical"/>
-                                                                <Link to={"#"}>编辑</Link>
+                                                                <Button type={"primary"}
+                                                                        onClick={() => this.edit(record.id)}>编辑</Button>
                                                                 <Divider type="vertical"/>
-                                                                <Link to={"#"}>发布</Link>
+                                                                <Button type={"primary"}
+                                                                        onClick={() => this.release(record.id)}>发布</Button>
                                                             </span>
                                                     )}
                                                 />

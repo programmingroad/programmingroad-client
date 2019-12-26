@@ -1,7 +1,10 @@
 import React, {Component} from "react";
-import {Card, Divider, Modal, Table, Tabs} from "antd";
+import {Button, Card, Divider, Modal, Table, Tabs} from "antd";
 import {reqAdminArticleList, reqAdminDeleteArticle, reqAllTag} from "../../../api";
 import {Link} from "react-router-dom";
+import ReactMarkdown from "../edit";
+
+import './index.less'
 
 const {Column} = Table;
 const {confirm} = Modal;
@@ -17,7 +20,9 @@ export default class AdminArticles extends Component {
             totalCount: 0,
             selectTagId: 0,
             tagList: [],
-            loading: true
+            loading: true,
+            visible: false,
+            content: ""
         }
     }
 
@@ -48,7 +53,7 @@ export default class AdminArticles extends Component {
     }
 
     // 删除文章
-    deleteArticle = (id) => {
+    delete = (id) => {
         confirm({
             title: '删除文章',
             onOk: () => {
@@ -61,6 +66,11 @@ export default class AdminArticles extends Component {
             onCancel() {
             },
         })
+    }
+
+    // 编辑文章
+    edit = (id) => {
+        this.props.history.push("/admin/edit/" + id);
     }
 
     tableOnChange = (pagination) => {
@@ -78,8 +88,22 @@ export default class AdminArticles extends Component {
         })
     }
 
+    view = (id) => {
+        console.log(id)
+        this.setState({
+            visible: true,
+        });
+    };
+
+    cancelView = () => {
+        this.setState({
+            visible: false,
+            content: ""
+        });
+    };
+
     render() {
-        const {articleList, currPage, totalCount, tagList, loading} = this.state;
+        const {articleList, currPage, totalCount, tagList, loading, content, visible} = this.state;
         return (
             <Card title={"文章管理"} style={{minHeight: "100%"}}>
                 {
@@ -108,11 +132,25 @@ export default class AdminArticles extends Component {
                                                     key="action"
                                                     render={(text, record) => (
                                                         <span>
-                                                                <Link to={"#"}
-                                                                      onClick={() => this.deleteArticle(record.id)}>删除</Link>
-                                                                <Divider type="vertical"/>
-                                                                <Link to={"#"}>编辑</Link>
-                                                            </span>
+                                                            <Button type={"primary"}
+                                                                    onClick={() => this.delete(record.id)}>删除</Button>
+                                                            <Divider type="vertical"/>
+                                                            <Button type={"primary"}
+                                                                    onClick={() => this.edit(record.id)}>编辑</Button>
+                                                            <Divider type="vertical"/>
+                                                            <Button type={"primary"}
+                                                                    onClick={() => this.view(record.id)}>查看</Button>
+                                                            <Modal
+                                                                title="查看"
+                                                                visible={visible}
+                                                                onOk={this.cancelView}
+                                                                onCancel={this.cancelView}
+                                                                footer={null}
+                                                                wrapClassName={'admin-articles-modal'}
+                                                            >
+                                                                <ReactMarkdown source={content}/>
+                                                            </Modal>
+                                                        </span>
                                                     )}
                                                 />
                                             </Table>
