@@ -135,7 +135,6 @@ export default class AdminEdit extends Component {
 
     render() {
         const {article, tagList} = this.state;
-        console.log(article)
         return (
             <Card title={"写博客"} style={{height: "100%"}} className={"admin-edit-ant-card"}>
                 <div className={"admin-edit-header"}>

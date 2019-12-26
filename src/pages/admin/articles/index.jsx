@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import {Button, Card, Divider, Modal, Table, Tabs} from "antd";
 import {reqAdminArticleList, reqAdminDeleteArticle, reqAllTag} from "../../../api";
-import {Link} from "react-router-dom";
-import ReactMarkdown from "../edit";
 
 import './index.less'
+import {Link} from "react-router-dom";
 
 const {Column} = Table;
 const {confirm} = Modal;
@@ -21,8 +20,6 @@ export default class AdminArticles extends Component {
             selectTagId: 0,
             tagList: [],
             loading: true,
-            visible: false,
-            content: ""
         }
     }
 
@@ -88,22 +85,8 @@ export default class AdminArticles extends Component {
         })
     }
 
-    view = (id) => {
-        console.log(id)
-        this.setState({
-            visible: true,
-        });
-    };
-
-    cancelView = () => {
-        this.setState({
-            visible: false,
-            content: ""
-        });
-    };
-
     render() {
-        const {articleList, currPage, totalCount, tagList, loading, content, visible} = this.state;
+        const {articleList, currPage, totalCount, tagList, loading} = this.state;
         return (
             <Card title={"文章管理"} style={{minHeight: "100%"}}>
                 {
@@ -138,18 +121,10 @@ export default class AdminArticles extends Component {
                                                             <Button type={"primary"}
                                                                     onClick={() => this.edit(record.id)}>编辑</Button>
                                                             <Divider type="vertical"/>
-                                                            <Button type={"primary"}
-                                                                    onClick={() => this.view(record.id)}>查看</Button>
-                                                            <Modal
-                                                                title="查看"
-                                                                visible={visible}
-                                                                onOk={this.cancelView}
-                                                                onCancel={this.cancelView}
-                                                                footer={null}
-                                                                wrapClassName={'admin-articles-modal'}
-                                                            >
-                                                                <ReactMarkdown source={content}/>
-                                                            </Modal>
+                                                            <Button type={"primary"}>
+                                                                <Link to={"/content/" + record.id}
+                                                                      target={'_blank'}>查看</Link>
+                                                            </Button>
                                                         </span>
                                                     )}
                                                 />
