@@ -16,6 +16,7 @@ export default class AdminEdit extends Component {
             visible: false,
             tagList: [],
         })
+        this.myRef = React.createRef();
     }
 
     componentDidMount() {
@@ -105,19 +106,17 @@ export default class AdminEdit extends Component {
         // 必须要有标签id
         if (this.state.article.tagId) {
             // 判断是否有文章id 有id更新
+            const article = {
+                ...this.state.article,
+                released: "RELEASED"
+            }
             if (this.state.article.id) {
-                reqAdminUpdateArticle(this.state.article.id, {
-                    ...this.state.article,
-                    released: "RELEASED"
-                }).then(() => {
+                reqAdminUpdateArticle(this.state.article.id, article).then(() => {
                     message.success("发布成功");
                     this.clearArticle();
                 })
             } else {
-                reqAdminAddArticle({
-                    ...this.state.article,
-                    released: "RELEASED"
-                }).then(() => {
+                reqAdminAddArticle(article).then(() => {
                     message.success("发布成功");
                     this.clearArticle();
                 })
@@ -135,15 +134,28 @@ export default class AdminEdit extends Component {
 
     uploadOnChange = (info) => {
         if (info.file.status === 'done') {
-            message.success(`上传成功`);
+            const textarea = this.myRef.current;
+            const startPos = textarea.selectionStart;
+            const endPos = textarea.selectionEnd;
+            const beforeValue = textarea.value.substring(0, startPos);
+            const afterValue = textarea.value.substring(endPos, textarea.value.length);
+
+            const text = "![](/" + info.file.response.body.url + ")";
+
+            textarea.value = beforeValue + text + afterValue;
+
+            textarea.selectionStart = startPos + text.length;
+            textarea.selectionEnd = startPos + text.length;
+            textarea.focus();
             this.setState({
                 article: {
                     ...this.state.article,
-                    content: info.file.response.body.url
+                    content: textarea.value
                 }
             })
+            message.success("上传成功");
         } else if (info.file.status === 'error') {
-            message.error(`上传失败`);
+            message.error("上传失败");
         }
     }
 
@@ -201,6 +213,7 @@ export default class AdminEdit extends Component {
                     className={"admin-edit-content"}
                     onChange={this.changeContent}
                     value={article.content ? article.content : ""}
+                    ref={this.myRef}
                 >
                 </textarea>
             </Card>
