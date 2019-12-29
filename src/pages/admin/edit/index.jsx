@@ -139,20 +139,16 @@ export default class AdminEdit extends Component {
             const endPos = textarea.selectionEnd;
             const beforeValue = textarea.value.substring(0, startPos);
             const afterValue = textarea.value.substring(endPos, textarea.value.length);
-
             const text = "![](/" + info.file.response.body.url + ")";
-
-            textarea.value = beforeValue + text + afterValue;
-
-            textarea.selectionStart = startPos + text.length;
-            textarea.selectionEnd = startPos + text.length;
-            textarea.focus();
             this.setState({
                 article: {
                     ...this.state.article,
-                    content: textarea.value
+                    content: beforeValue + text + afterValue
                 }
             })
+            textarea.selectionStart = startPos + text.length;
+            textarea.selectionEnd = startPos + text.length;
+            textarea.focus();
             message.success("上传成功");
         } else if (info.file.status === 'error') {
             message.error("上传失败");
