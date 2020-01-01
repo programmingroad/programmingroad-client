@@ -139,7 +139,7 @@ export default class AdminEdit extends Component {
             const endPos = textarea.selectionEnd;
             const beforeValue = textarea.value.substring(0, startPos);
             const afterValue = textarea.value.substring(endPos, textarea.value.length);
-            const text = "![](/" + info.file.response.body.url + ")";
+            const text = "![](" + info.file.response.body.url + ")";
             this.setState({
                 article: {
                     ...this.state.article,
