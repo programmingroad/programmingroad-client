@@ -114,6 +114,9 @@ export default class Blog extends Component {
                             : undefined
                     }
                 </div>
+                <div className={"blog-footer"}>
+                    <a href={"http://www.beian.miit.gov.cn"} target={"_blank"}>京ICP备19053531号-1</a>
+                </div>
             </div>
         )
     }
