@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 
 import './index.less'
 import {reqAdminAddArticle, reqAdminAllTag, reqAdminArticle, reqAdminUpdateArticle} from "../../../api";
+import TextArea from "antd/es/input/TextArea";
 
 const {Option} = Select;
 
@@ -60,6 +61,15 @@ export default class AdminEdit extends Component {
             article: {
                 ...this.state.article,
                 content: e.target.value
+            }
+        })
+    }
+
+    changeDescription = (e) => {
+        this.setState({
+            article: {
+                ...this.state.article,
+                description: e.target.value
             }
         })
     }
@@ -195,6 +205,14 @@ export default class AdminEdit extends Component {
                     <Button type="primary" style={{marginLeft: '10px'}} onClick={this.release}
                             disabled={article.released === "RELEASED"}>发布</Button>
                 </div>
+                <TextArea
+                    className={"admin-edit-description"}
+                    placeholder={"请输入描述"}
+                    rows={"3"}
+                    onChange={this.changeDescription}
+                    value={article.description ? article.description : ""}
+                >
+                </TextArea>
                 <div className={"admin-edit-toolbar"}>
                     <Upload
                         action={"/api/admin/image/upload"}

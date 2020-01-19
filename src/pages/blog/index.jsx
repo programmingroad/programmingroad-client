@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import {Button, List, Tabs} from "antd";
+import {Button, List, Tabs, Typography} from "antd";
 import Header from "../../components/header";
 
 import './index.less'
 import {reqAllTag, reqArticleList} from "../../api";
-import {Link} from "react-router-dom";
 
 const {TabPane} = Tabs;
+const {Paragraph} = Typography;
 
 export default class Blog extends Component {
 
@@ -95,14 +95,24 @@ export default class Blog extends Component {
                                                     itemLayout="vertical"
                                                     renderItem={item => (
                                                         <List.Item
-                                                            actions={[<Link to={"/content/" + item.id} target={'_blank'}>
-                                                                readMore >>
-                                                            </Link>]}
+                                                            key={item.id}
+                                                            extra={
+                                                                <img
+                                                                    width={250}
+                                                                    // height={250}
+                                                                    alt="logo"
+                                                                    src="/api/image/1579166009840_1.jpg"
+                                                                />
+                                                            }
                                                         >
                                                             <List.Item.Meta
-                                                                title={item.title}
+                                                                title={<a href={"/content/" + item.id}
+                                                                          target={'_blank'}>{item.title}</a>}
+                                                                description={<Paragraph
+                                                                    ellipsis={{rows: 4}}>
+                                                                    {item.description}
+                                                                </Paragraph>}
                                                             />
-                                                            <div>Article created by {item.createTime}</div>
                                                         </List.Item>
                                                     )}
                                                 />
