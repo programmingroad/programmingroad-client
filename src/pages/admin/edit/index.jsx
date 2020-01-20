@@ -143,25 +143,29 @@ export default class AdminEdit extends Component {
     }
 
     uploadOnChange = (info) => {
-        if (info.file.status === 'done') {
-            const textarea = this.myRef.current;
-            const startPos = textarea.selectionStart;
-            const endPos = textarea.selectionEnd;
-            const beforeValue = textarea.value.substring(0, startPos);
-            const afterValue = textarea.value.substring(endPos, textarea.value.length);
-            const text = "![](" + info.file.response.body.url + ")";
-            this.setState({
-                article: {
-                    ...this.state.article,
-                    content: beforeValue + text + afterValue
-                }
-            })
-            textarea.selectionStart = startPos + text.length;
-            textarea.selectionEnd = startPos + text.length;
-            textarea.focus();
-            message.success("上传成功");
-        } else if (info.file.status === 'error') {
-            message.error("上传失败");
+        console.log(info.file.status)
+        switch (info.file.status) {
+            case 'done':
+                const textarea = this.myRef.current;
+                const startPos = textarea.selectionStart;
+                const endPos = textarea.selectionEnd;
+                const beforeValue = textarea.value.substring(0, startPos);
+                const afterValue = textarea.value.substring(endPos, textarea.value.length);
+                const text = "![](" + info.file.response.body.url + ")";
+                this.setState({
+                    article: {
+                        ...this.state.article,
+                        content: beforeValue + text + afterValue
+                    }
+                })
+                textarea.selectionStart = startPos + text.length;
+                textarea.selectionEnd = startPos + text.length;
+                textarea.focus();
+                message.success("上传成功");
+                break;
+            case 'error':
+                message.error("上传失败");
+                break;
         }
     }
 
@@ -215,7 +219,7 @@ export default class AdminEdit extends Component {
                 </TextArea>
                 <div className={"admin-edit-toolbar"}>
                     <Upload
-                        action={"/api/admin/image/upload"}
+                        action={"/api/admin/image/content/upload"}
                         name={"multipartFile"}
                         onChange={this.uploadOnChange}
                         showUploadList={false}

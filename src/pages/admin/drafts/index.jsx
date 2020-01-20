@@ -1,10 +1,11 @@
 import React, {Component} from "react";
-import {Button, Card, Divider, message, Modal, Table, Tabs} from "antd";
+import {Button, Card, Divider, message, Modal, Table, Tabs, Typography} from "antd";
 import {reqAdminArticleList, reqAdminDeleteArticle, reqAdminUpdateArticle, reqAllTag} from "../../../api";
 
 const {Column} = Table;
 const {confirm} = Modal;
 const {TabPane} = Tabs;
+const {Paragraph} = Typography;
 
 export default class AdminDrafts extends Component {
 
@@ -116,6 +117,17 @@ export default class AdminDrafts extends Component {
                                                 loading={loading}
                                             >
                                                 <Column title="标题" dataIndex="title" key="title"/>
+                                                <Column
+                                                    title="描述"
+                                                    key="description"
+                                                    render={(text, record) => (
+                                                        <Paragraph
+                                                            ellipsis={{rows: 1}}>
+                                                            {record.description}
+                                                        </Paragraph>
+                                                    )
+                                                    }
+                                                />
                                                 <Column title="创建时间" dataIndex="createTime" key="createTime"/>
                                                 <Column
                                                     title="操作"

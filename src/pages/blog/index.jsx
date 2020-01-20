@@ -98,9 +98,8 @@ export default class Blog extends Component {
                                                             key={item.id}
                                                             extra={
                                                                 <img
-                                                                    width={250}
-                                                                    // height={250}
-                                                                    alt="logo"
+                                                                    width={350}
+                                                                    alt="cover"
                                                                     src="/api/image/1579166009840_1.jpg"
                                                                 />
                                                             }

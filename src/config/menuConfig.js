@@ -23,6 +23,11 @@ const menuList = [
         title: '草稿管理',
         key: '/admin/drafts',
         icon: 'file-markdown'
+    },
+    {
+        title: '封面管理',
+        key: '/admin/covers',
+        icon: 'file-image'
     }
 ]
 

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Card, Icon, Input, Modal, Table} from "antd";
+import {Button, Card, Divider, Icon, Input, Modal, Table} from "antd";
 import {reqAdminAddTag, reqAdminAllTag, reqAdminDeleteTag} from "../../../api";
 
 import './index.less'
@@ -108,7 +108,9 @@ export default class AdminTags extends Component {
                         title="操作"
                         key="action"
                         render={(text, record) => (
-                            <Link to="#" onClick={() => this.deleteTag(record.id)}>删除</Link>
+                            <span>
+                                <Button type={"primary"} onClick={() => this.deleteTag(record.id)}>删除</Button>
+                            </span>
                         )}
                     />
                 </Table>
