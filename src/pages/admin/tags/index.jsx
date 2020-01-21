@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Card, Divider, Icon, Input, Modal, Table} from "antd";
+import {Button, Card, Icon, Input, Modal, Table} from "antd";
 import {reqAdminAddTag, reqAdminAllTag, reqAdminDeleteTag} from "../../../api";
 
 import './index.less'

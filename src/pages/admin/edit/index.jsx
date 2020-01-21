@@ -143,7 +143,6 @@ export default class AdminEdit extends Component {
     }
 
     uploadOnChange = (info) => {
-        console.log(info.file.status)
         switch (info.file.status) {
             case 'done':
                 const textarea = this.myRef.current;
@@ -165,6 +164,8 @@ export default class AdminEdit extends Component {
                 break;
             case 'error':
                 message.error("上传失败");
+                break;
+            default:
                 break;
         }
     }

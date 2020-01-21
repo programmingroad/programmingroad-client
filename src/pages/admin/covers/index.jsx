@@ -7,7 +7,7 @@ const {confirm} = Modal;
 export default class AdminCovers extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             previewVisible: false,
             previewImage: '',
@@ -32,7 +32,7 @@ export default class AdminCovers extends Component {
         this.setState({previewVisible: false});
     }
 
-    handlePreview = async file => {
+    handlePreview = (file) => {
         this.setState({
             previewImage: file.url,
             previewVisible: true,
@@ -90,7 +90,7 @@ export default class AdminCovers extends Component {
                     {uploadButton}
                 </Upload>
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                    <img alt="example" style={{width: '100%'}} src={previewImage}/>
+                    <img alt="preview" style={{width: '100%'}} src={previewImage}/>
                 </Modal>
             </Card>
         )
