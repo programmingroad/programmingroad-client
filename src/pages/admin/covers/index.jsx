@@ -62,7 +62,7 @@ export default class AdminCovers extends Component {
                 message.success("上传成功");
                 break;
             case 'error':
-                message.success("上传失败");
+                message.error("上传失败");
                 break;
             default:
                 this.setState({fileList})
